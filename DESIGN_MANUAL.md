@@ -14,7 +14,8 @@ implementation, design, routing, browser, or deployment decisions change.
   retain their editorial architecture while improving product fidelity,
   responsive typography, official brand integration, and diagnostic legibility.
 - **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
-  social metadata use this origin. Custom-domain connection is still pending.
+  social metadata use this origin. The Cloudflare DNS connection, Sites custom
+  hostname, and TLS certificate are active.
 - **Implemented routes:** `/`, `/linkscope`, `/linkscope/privacy`, and
   `/linkscope/support`. Unknown routes return a real `404` document.
 - **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, and a Cloudflare
@@ -35,14 +36,15 @@ implementation, design, routing, browser, or deployment decisions change.
 - **Important constraints:** Preserve real nested routes, native navigation,
   source-grounded product claims, a no-JavaScript baseline, first-class Light
   and Dark appearance, and the absence of unnecessary runtime dependencies.
-- **Known limitations:** The preferred custom domain is not connected; the
-  build has not yet had physical Safari, Firefox, or assistive-technology QA;
+- **Known limitations:** The owner-only access policy returns `403` to public
+  requests at the canonical origin; the build has not yet had physical Safari,
+  Firefox, or assistive-technology QA;
   LinkScope Lite is in development testing but has no verified public App Store
   or direct-download destination yet; the privacy page is a source-grounded
   implementation note rather than a final distribution policy.
-- **Next recommended work:** Connect and verify `apps.jasonstu.cc`, run a real
-  WebKit/Firefox/VoiceOver pass, and add a download only when a signed public
-  release destination is verified.
+- **Next recommended work:** Decide when the Site should become publicly
+  accessible, run a real WebKit/Firefox/VoiceOver pass, and add a download only
+  when a signed public release destination is verified.
 
 ## Authority and update rule
 
@@ -204,10 +206,10 @@ runtime, maintenance, and privacy cost.
 ChatGPT Sites is the selected production runtime and host. The Sites project is
 `appgprj_6a8687dcb59881918e9895b01b15b506` with slug `jasonstu-apps`; the
 current second-pass deployment is owner-only. `.openai/hosting.json` records the
-opaque project ID and confirms that D1 and R2 are unused. The generated Sites URL
-is a production deployment, but `https://apps.jasonstu.cc` remains the preferred
-canonical origin and still needs custom-domain connection and direct-route
-verification.
+opaque project ID and confirms that D1 and R2 are unused. The custom hostname
+`apps.jasonstu.cc` is active through a DNS-only Cloudflare CNAME; Sites reports
+both the hostname and TLS certificate active. Public requests currently receive
+`403` by design because access has not been opened beyond the owner.
 
 ## Significant decisions and rejected returns
 
@@ -228,7 +230,8 @@ verification.
 
 ## Open questions and technical debt
 
-- What DNS/custom-domain workflow will connect `apps.jasonstu.cc` to Sites?
+- When should the owner-only Site become publicly accessible at the canonical
+  origin?
 - Which signed LinkScope build and durable App Store or direct-download
   destination will become the first verified public release?
 - Does a later collection need an Auto/Light/Dark selector in addition to the
@@ -240,8 +243,8 @@ verification.
 
 ## Next actions
 
-1. Connect `apps.jasonstu.cc`, verify TLS, canonical resolution, nested-route
-   reloads, and redirects at the preferred origin.
+1. Decide when to open public access, then verify authenticated and public
+   nested-route reloads and redirects at the canonical origin.
 2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
    reduced-motion checks; record only actionable differences.
 3. Reconcile LinkScope release metadata and add a download only after its signed
