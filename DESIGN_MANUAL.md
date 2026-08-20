@@ -9,9 +9,10 @@ implementation, design, routing, browser, or deployment decisions change.
 
 ## Session Resume
 
-- **Project status:** The first production implementation is complete. The
-  collection home and the first LinkScope product chapter are implemented,
-  validated, and published through ChatGPT Sites with owner-only access.
+- **Project status:** The first production implementation is complete and its
+  focused second-pass refinement is implemented locally. The collection home
+  and LinkScope chapter retain their editorial architecture while improving
+  product fidelity, responsive typography, and official brand integration.
 - **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
   social metadata use this origin. Custom-domain connection is still pending.
 - **Implemented routes:** `/`, `/linkscope`, `/linkscope/privacy`, and
@@ -22,12 +23,12 @@ implementation, design, routing, browser, or deployment decisions change.
   Every public route returns meaningful HTML directly. Ordinary navigation uses
   native anchors; no client router or application-specific client JavaScript is
   required for core content or interaction.
-- **Design state:** The shared collection is a restrained editorial index.
-  LinkScope is an independent technical chapter derived from the current app,
-  its production mark, provider model, availability states, diagnostic model,
-  and running macOS interface. Its approved brief is
+- **Design state:** The shared collection remains a restrained editorial index.
+  LinkScope is a device-led technical chapter derived from the current app,
+  supplied screenshots, production mark, transport/provider provenance,
+  availability states, and diagnostic model. Its approved brief is
   `docs/art-direction/linkscope.md`.
-- **Browser enhancements:** CSS `:has()` powers provider-lens selection,
+- **Browser enhancements:** CSS `:has()` powers device-detail tab selection,
   `content-visibility` defers below-fold rendering, and cross-document View
   Transitions provide optional continuity. Each has a complete CSS/native
   fallback; reduced motion disables transition behavior.
@@ -36,11 +37,13 @@ implementation, design, routing, browser, or deployment decisions change.
   and Dark appearance, and the absence of unnecessary runtime dependencies.
 - **Known limitations:** The preferred custom domain is not connected; the
   build has not yet had physical Safari, Firefox, or assistive-technology QA;
-  there is no verified public LinkScope binary to offer; the privacy page is a
-  source-grounded implementation note rather than a final distribution policy.
-- **Next recommended work:** Connect and verify `apps.jasonstu.cc`, run a real
-  WebKit/Firefox/VoiceOver pass, and add a download only when a signed public
-  release destination is verified.
+  LinkScope Lite is in development testing but has no verified public App Store
+  or direct-download destination yet; the privacy page is a source-grounded
+  implementation note rather than a final distribution policy.
+- **Next recommended work:** Publish the verified second pass to the existing
+  owner-only Sites project when authorized, connect and verify
+  `apps.jasonstu.cc`, run a real WebKit/Firefox/VoiceOver pass, and add a download
+  only when a signed public release destination is verified.
 
 ## Authority and update rule
 
@@ -76,17 +79,22 @@ default.
   handler without an unused image or data service.
 - The Sites Vite plugin produces the hosting artifact. The project has no D1,
   R2, authentication, analytics, persistence, or third-party script.
-- React is used as server-rendered authoring syntax. The LinkScope provider lens
-  is native radio markup plus CSS rather than a hydrated client component.
+- React is used as server-rendered authoring syntax. The LinkScope device
+  inspector uses native radio markup plus CSS rather than a hydrated client
+  component. Its responsive composition transforms from a desktop sidebar/detail
+  window into a stacked device browser and detail workspace; it is never scaled
+  down into unreadable miniature desktop UI.
 - Product and document links are ordinary `<a>` elements. Cross-document
   enhancement may animate compatible navigation, but routing never depends on
   it.
 
 ## Shared shell and content model
 
-The shared shell is intentionally small: a skip link, wordmark, primary route
-context, and concise footer where appropriate. The collection home presents one
-editorial product row rather than a generic equal-card grid.
+The shared shell is intentionally small: a skip link, the original text-only
+header wordmark, primary route context, and concise footer where appropriate.
+The supplied JasonStu logo appears only as a quiet footer publishing signature;
+it does not alter or compete with the established header. The collection home
+presents one editorial product row rather than a generic equal-card grid.
 
 Product facts currently live near their route because only one public app is
 implemented. Introduce a shared data model only when a second real consumer
@@ -96,11 +104,13 @@ traceable to current app source, assets, documentation, or inspected behavior.
 ## Current art direction
 
 LinkScope's thesis is “follow the evidence, including the gaps.” Its dominant
-materials are the production scope/orbit mark, provider names, parameter paths,
-availability language, and a privacy-safe explanatory reconstruction. Blue is
-the product accent and marks sources, selection, and observed data; status
-colors keep semantic roles. A visible macOS-window boundary is used only around
-the product reconstruction.
+materials are the production scope/orbit mark, the device → transport/provider →
+parameter relationship, availability language, and a privacy-safe explanatory
+reconstruction. Blue is the product accent and marks sources, selection, and
+observed data; status colors keep semantic roles. The reconstruction now reads
+as a distinct application window with a quiet title bar, toolbar, device
+sidebar, and detail workspace. This bounded window treatment is reserved for
+the product demonstration; it is not a reusable card or site-wide decoration.
 
 The page rhythm moves from a quiet icon-led opening to a dense provider
 inspector, a high-contrast availability chapter, a measured diagnostic trace,
@@ -116,7 +126,10 @@ conversion claims, fabricated screenshots, and an unverified download action.
   an undecided implementation.
 - Theme-color metadata is supplied for both appearances.
 - Typography uses the native system sans stack and a native UI-monospace stack.
-  No webfont, font preloader, or font tracking dependency is present.
+  Display weights were reduced and the responsive system changes weight,
+  tracking, line-height, measure, and intentional line breaks at smaller desktop,
+  tablet, and mobile widths. This keeps platform affinity and eliminates font
+  transfer or layout-shift risk; no webfont or preloader is present.
 
 ## Responsive behavior
 
@@ -145,7 +158,7 @@ gutters and touch sizing are part of the base CSS.
 
 | Enhancement | Current benefit | Detection | Complete fallback |
 | --- | --- | --- | --- |
-| CSS `:has()` | Shows the selected provider's observation panel | `@supports selector(:has(*))` | All provider panels remain in document flow |
+| CSS `:has()` | Shows the selected Summary, Raw Parameters, or History view | `@supports selector(:has(*))` | All device-detail panels remain in document flow |
 | `content-visibility: auto` | Avoids unnecessary below-fold rendering | `@supports (content-visibility: auto)` | Normal eager CSS rendering |
 | Cross-document View Transitions | Subtle continuity for native navigation | `@supports (view-transition-name: none)` and motion preference | Immediate normal document navigation |
 
@@ -175,6 +188,9 @@ runtime, maintenance, and privacy cost.
 
 - `public/linkscope-mark.svg` is derived from the current product's authored
   production geometry and is the page's primary identity material.
+- `public/jasonstu-logo.svg` and `public/jasonstu-logo-dark.png` are byte-for-byte
+  copies of the supplied official Light and Dark brand assets. Native `<picture>`
+  selection uses them only in the footer, without client-side appearance logic.
 - `public/favicon.svg` is a compact mark treatment.
 - `public/og.png` and `public/linkscope-social.png` are the generated collection
   and LinkScope social-preview assets; they are not page-background decoration.
@@ -197,8 +213,9 @@ origin and still needs custom-domain connection and direct-route verification.
 
 - Keep native multi-document navigation; do not introduce a client router to
   simulate routes that the host can serve directly.
-- Keep the CSS-only inspector while it communicates the product accurately; do
-  not hydrate it for cosmetic state management.
+- Keep the CSS-only, device-led inspector while it communicates the product
+  accurately; do not restore a provider-first selector or hydrate it for cosmetic
+  state management.
 - Do not add Tailwind, a component library, a CMS, D1/R2, analytics, or an image
   pipeline without a demonstrated requirement.
 - Do not turn the collection into an equal grid of generic cards or future app
@@ -212,8 +229,8 @@ origin and still needs custom-domain connection and direct-route verification.
 ## Open questions and technical debt
 
 - What DNS/custom-domain workflow will connect `apps.jasonstu.cc` to Sites?
-- Which signed LinkScope build and durable public destination will become the
-  first verified download?
+- Which signed LinkScope build and durable App Store or direct-download
+  destination will become the first verified public release?
 - Does a later collection need an Auto/Light/Dark selector in addition to the
   current system-preference behavior?
 - When a second app is ready, which shell and content facts prove reusable, and
@@ -223,12 +240,14 @@ origin and still needs custom-domain connection and direct-route verification.
 
 ## Next actions
 
-1. Connect `apps.jasonstu.cc`, verify TLS, canonical resolution, nested-route
+1. Publish the locally verified second pass to the existing owner-only Sites
+   project when deployment is authorized.
+2. Connect `apps.jasonstu.cc`, verify TLS, canonical resolution, nested-route
    reloads, and redirects at the preferred origin.
-2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
+3. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
    reduced-motion checks; record only actionable differences.
-3. Reconcile LinkScope release metadata and add a download only after its signed
+4. Reconcile LinkScope release metadata and add a download only after its signed
    distribution path is public and verified.
-4. Update the privacy document when distribution or network behavior changes.
-5. Begin any second app with a new product-evidence review and art-direction
+5. Update the privacy document when distribution or network behavior changes.
+6. Begin any second app with a new product-evidence review and art-direction
    brief rather than copying the LinkScope page.

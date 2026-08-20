@@ -39,10 +39,29 @@ for (const [pathname, expected, canonical] of routeCases) {
     assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/i);
     assert.match(html, /<main[^>]+id="main-content"/i);
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical}"`));
+    assert.match(html, />JasonStu<\/span><span>Apps<\/span>/);
+
+    if (pathname === "/" || pathname === "/linkscope") {
+      assert.match(html, /jasonstu-logo\.svg/);
+      assert.match(html, /jasonstu-logo-dark\.png/);
+    }
 
     if (pathname === "/linkscope") {
       assert.match(html, /https:\/\/apps\.jasonstu\.cc\/linkscope-social\.png/);
       assert.doesNotMatch(html, /https:\/\/apps\.jasonstu\.cc\/og\.png/);
+      assert.match(html, /Interactive reconstruction/);
+      assert.match(html, /LinkScope application demonstration/);
+      assert.match(html, /Explore a LinkScope device record/);
+      assert.match(html, /Magic Trackpad/);
+      assert.match(html, /Transport identities/);
+      assert.match(html, /Raw Parameters/);
+      assert.match(html, /History/);
+      assert.match(html, /Each value keeps its source and availability/);
+      assert.match(html, /Evidence changes without losing provenance/);
+      assert.match(html, /Development testing is underway/);
+      assert.match(html, /public\.corehid/);
+      assert.match(html, /public\.iobluetooth/);
+      assert.doesNotMatch(html, /Select a public provider lens/);
     }
 
     if (pathname.endsWith("/privacy") || pathname.endsWith("/support")) {

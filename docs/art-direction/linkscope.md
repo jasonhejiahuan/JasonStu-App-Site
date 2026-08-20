@@ -1,9 +1,10 @@
 # LinkScope art-direction brief
 
-Status: Approved for the first `/linkscope` implementation  
+Status: Approved and refined for the second `/linkscope` implementation
 Evidence reviewed: LinkScope source, English localization, provider contracts,
-implementation/acceptance documents, production icon layers, and the current
-running macOS interface on 2026-08-20
+implementation/acceptance documents, production icon layers, the running macOS
+interface, and current screenshots of Summary, Raw Parameters, History,
+Transport Identities, Timeline, permissions, and Diagnostics on 2026-08-20
 
 ## Product evidence
 
@@ -15,12 +16,20 @@ and event-driven while idle. A visitor can inspect consolidated devices, raw
 parameters, provider status, a timeline, snapshots, JSON import/export, and
 user-started diagnostic sessions with bounded sampling and CSV export.
 
+The current interface is device-led. Connected, saved, and inactive/historical
+devices form the primary navigation; selecting one opens its Summary, Raw
+Parameters, and History. Transport identities and provider-specific observations
+remain inside that selected-device context. Provider Status, Timeline, and
+Diagnostics are separate system destinations, not the primary way to choose an
+accessory.
+
 The current source contains Full and Lite editions, English and Simplified
-Chinese UI, encrypted local persistence for sensitive payloads, and no verified
-public download destination. The website therefore links to the source and
-describes active development; it does not invent pricing, release, or download
-claims. Repository version references currently conflict, so the page does not
-publish a version number.
+Chinese UI, and encrypted local persistence for sensitive payloads. LinkScope
+Lite is currently in development testing, but no public App Store or durable
+direct-download destination has been verified. The website therefore describes
+testing as underway and the public release as forthcoming; it does not invent
+pricing, a release date, or a download link. Repository version references
+currently conflict, so the page does not publish a version number.
 
 ## Required brief
 
@@ -29,9 +38,9 @@ publish a version number.
    while preserving unavailable, historical, and provider-specific evidence.
    Its most revealing state is one consolidated accessory with observations
    from several providers and explicit availability labels.
-2. **Page thesis:** Follow one observation from public framework to resolved
-   accessory, then show how LinkScope preserves both the value and the reason a
-   value cannot be read.
+2. **Page thesis:** Select a device, trace its transport identities and
+   observations back to public providers, then show how LinkScope preserves both
+   a value and the reason a value cannot be read.
 3. **Dominant material:** The production scope/orbit mark, provider and
    parameter names from the app, explicit availability language, and a focused
    explanatory reconstruction using representative privacy-safe data. Private
@@ -42,10 +51,15 @@ publish a version number.
 5. **Accent rationale:** LinkScope owns a precise blue family taken from its
    production icon. Blue marks sources, selection, and observed data—not generic
    decoration. Green and amber appear only for actual status meanings.
-6. **Interaction thesis:** Selecting a provider lens should teach how independent
-   read-only observations contribute evidence without pretending the website is
-   running LinkScope. Interaction is optional enhancement; the complete provider
-   and availability explanation remains in the document.
+6. **Interaction thesis:** A concise device-detail reconstruction should teach the
+   real relationship: device → transport identities and provider observations →
+   parameters and history. The demonstration is presented as a clearly bounded
+   LinkScope application window, with a device browser and detail workspace
+   matching the real product's hierarchy. Native Summary, Raw Parameters, and
+   History controls reveal the same evidence from different views without
+   pretending the website is running LinkScope. Interaction is optional
+   enhancement; every view remains in the document when enhanced selection is
+   unsupported.
 7. **Responsive transformation:** Wide layouts place the editorial explanation
    beside a broad inspection field with hanging technical annotations. Narrow
    layouts make the trace vertical, turn side notes into captions, retain source
@@ -60,8 +74,17 @@ publish a version number.
 
 ## Boundary and motion decisions
 
-- A visible boundary is reserved for the real app-window reconstruction,
-  interactive hit regions, and data rows whose separators aid inspection.
+- A visible boundary is reserved for the product reconstruction, interactive
+  hit regions, and data rows whose separators aid inspection.
+- The reconstruction is web-native rather than a macOS screenshot clone. It
+  borrows the real information architecture, labels, and density while omitting
+  private names and identifiers. A restrained title bar, product toolbar,
+  sidebar, and window boundary make its role as interactive product evidence
+  immediately legible. This window treatment is a semantic exception to the
+  site's general avoidance of rounded containers and shadows.
+- On tablet and mobile the application window changes composition: the device
+  browser becomes a compact upper region and the detail workspace follows at
+  readable size. Do not scale the desktop window down as a screenshot.
 - Provider names and capabilities are not placed in feature cards; alignment,
   rules, and type establish their relationships.
 - No ambient orbit animation is used even though the icon contains orbits.
@@ -69,3 +92,15 @@ publish a version number.
 - The page may use the icon's intrinsic gradients because they are part of the
   product asset. The surrounding site does not add decorative gradient fields.
 
+## Typography and publishing mark
+
+- The native system sans remains the typography source because it provides the
+  best macOS affinity, broad coverage, zero font transfer, and stable rendering.
+  Display weight is deliberately moderated. At smaller desktop, tablet, and
+  mobile widths, weight, tracking, line-height, measure, and authored line breaks
+  change together instead of shrinking one desktop headline treatment.
+- The official JasonStu artwork is an understated publishing signature in the
+  footer. The pre-existing text-only “JasonStu Apps” header remains unchanged.
+  The supplied SVG is used in Light appearance and the supplied white raster in
+  Dark appearance through native `<picture>` media selection, with no script or
+  visual effect.

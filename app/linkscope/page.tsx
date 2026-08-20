@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "../site-header";
-import { ProviderLens } from "./provider-lens";
+import { JasonStuSignature, SiteHeader } from "../site-header";
+import { DeviceInspector } from "./device-inspector";
 
 const pageDescription =
   "A native macOS wireless-accessory inspector built around public, read-only system providers and explicit availability states.";
@@ -103,12 +103,13 @@ export default function LinkScopePage() {
             <p className="eyebrow">01 / Inspect</p>
             <h2 id="inspection-title">Independent signals. Preserved provenance.</h2>
             <p>
-              Each provider stays visible. LinkScope resolves observations into a
-              physical accessory without pretending that display names alone prove
-              identity, then keeps the original provider and parameter path attached.
+              Select a device first, then inspect the transport identities,
+              observations, and parameter paths that describe it. LinkScope keeps
+              each source attached instead of flattening independent signals into a
+              single unexplained answer.
             </p>
           </div>
-          <ProviderLens />
+          <DeviceInspector />
           <dl className="opening-facts">
             <div><dt>Provider policy</dt><dd>Read / observe / sample / diagnose</dd></div>
             <div><dt>Idle behavior</dt><dd>Event-driven</dd></div>
@@ -195,7 +196,7 @@ export default function LinkScopePage() {
             <div><dt>Platform</dt><dd>macOS 15 or newer in the current development requirements</dd></div>
             <div><dt>Languages</dt><dd>English and Simplified Chinese</dd></div>
             <div><dt>Local history</dt><dd>Encrypted sensitive payloads; unlimited retention by default</dd></div>
-            <div><dt>Availability</dt><dd>Source build only; no verified public download is advertised yet</dd></div>
+            <div><dt>Availability</dt><dd>Development testing is underway. The App Store release and public download are coming soon.</dd></div>
           </dl>
         </section>
 
@@ -213,10 +214,9 @@ export default function LinkScopePage() {
         </section>
       </main>
       <footer className="site-footer linkscope-footer">
-        <a href="/">JasonStu Apps</a>
+        <a href="/" aria-label="JasonStu Apps home"><JasonStuSignature /></a>
         <span>LinkScope is a native macOS project by JasonStu.</span>
       </footer>
     </>
   );
 }
-

@@ -13,3 +13,14 @@ export function SiteHeader({ product }: { product?: string }) {
   );
 }
 
+export function JasonStuSignature() {
+  return (
+    <span className="footer-signature" aria-label="JasonStu Apps">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcSet="/jasonstu-logo-dark.png" />
+        <img src="/jasonstu-logo.svg" width="3071" height="1045" alt="" />
+      </picture>
+      <span>Apps</span>
+    </span>
+  );
+}
