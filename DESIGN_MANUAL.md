@@ -9,10 +9,10 @@ implementation, design, routing, browser, or deployment decisions change.
 
 ## Session Resume
 
-- **Project status:** The first production implementation is complete and its
-  focused second-pass refinement is implemented locally. The collection home
-  and LinkScope chapter retain their editorial architecture while improving
-  product fidelity, responsive typography, and official brand integration.
+- **Project status:** The focused second-pass refinement is deployed to the
+  owner-only Sites production URL. The collection home and LinkScope chapter
+  retain their editorial architecture while improving product fidelity,
+  responsive typography, official brand integration, and diagnostic legibility.
 - **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
   social metadata use this origin. Custom-domain connection is still pending.
 - **Implemented routes:** `/`, `/linkscope`, `/linkscope/privacy`, and
@@ -40,10 +40,9 @@ implementation, design, routing, browser, or deployment decisions change.
   LinkScope Lite is in development testing but has no verified public App Store
   or direct-download destination yet; the privacy page is a source-grounded
   implementation note rather than a final distribution policy.
-- **Next recommended work:** Publish the verified second pass to the existing
-  owner-only Sites project when authorized, connect and verify
-  `apps.jasonstu.cc`, run a real WebKit/Firefox/VoiceOver pass, and add a download
-  only when a signed public release destination is verified.
+- **Next recommended work:** Connect and verify `apps.jasonstu.cc`, run a real
+  WebKit/Firefox/VoiceOver pass, and add a download only when a signed public
+  release destination is verified.
 
 ## Authority and update rule
 
@@ -203,11 +202,12 @@ runtime, maintenance, and privacy cost.
 ## Deployment
 
 ChatGPT Sites is the selected production runtime and host. The Sites project is
-`appgprj_6a8687dcb59881918e9895b01b15b506` with slug `jasonstu-apps`; its first
-version is owner-only. `.openai/hosting.json` records the opaque project ID and
-confirms that D1 and R2 are unused. The generated Sites URL is a production
-deployment, but `https://apps.jasonstu.cc` remains the preferred canonical
-origin and still needs custom-domain connection and direct-route verification.
+`appgprj_6a8687dcb59881918e9895b01b15b506` with slug `jasonstu-apps`; the
+current second-pass deployment is owner-only. `.openai/hosting.json` records the
+opaque project ID and confirms that D1 and R2 are unused. The generated Sites URL
+is a production deployment, but `https://apps.jasonstu.cc` remains the preferred
+canonical origin and still needs custom-domain connection and direct-route
+verification.
 
 ## Significant decisions and rejected returns
 
@@ -240,14 +240,12 @@ origin and still needs custom-domain connection and direct-route verification.
 
 ## Next actions
 
-1. Publish the locally verified second pass to the existing owner-only Sites
-   project when deployment is authorized.
-2. Connect `apps.jasonstu.cc`, verify TLS, canonical resolution, nested-route
+1. Connect `apps.jasonstu.cc`, verify TLS, canonical resolution, nested-route
    reloads, and redirects at the preferred origin.
-3. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
+2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
    reduced-motion checks; record only actionable differences.
-4. Reconcile LinkScope release metadata and add a download only after its signed
+3. Reconcile LinkScope release metadata and add a download only after its signed
    distribution path is public and verified.
-5. Update the privacy document when distribution or network behavior changes.
-6. Begin any second app with a new product-evidence review and art-direction
+4. Update the privacy document when distribution or network behavior changes.
+5. Begin any second app with a new product-evidence review and art-direction
    brief rather than copying the LinkScope page.
