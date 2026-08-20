@@ -75,3 +75,28 @@ test("returns a real not-found response", async () => {
   assert.equal(response.status, 404);
   assert.match(await response.text(), /outside the collection/i);
 });
+
+test("allows crawlers and advertises the canonical sitemap", async () => {
+  const response = await render("/robots.txt");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/plain\b/i);
+  const body = await response.text();
+  assert.match(body, /User-Agent: \*/i);
+  assert.match(body, /Allow: \//i);
+  assert.doesNotMatch(body, /Disallow:/i);
+  assert.match(body, /Sitemap: https:\/\/apps\.jasonstu\.cc\/sitemap\.xml/i);
+});
+
+test("limits sitemap URLs to the canonical apps hostname", async () => {
+  const response = await render("/sitemap.xml");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /xml/i);
+  const body = await response.text();
+  const locations = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.deepEqual(locations, [
+    "https://apps.jasonstu.cc/",
+    "https://apps.jasonstu.cc/linkscope",
+    "https://apps.jasonstu.cc/linkscope/privacy",
+    "https://apps.jasonstu.cc/linkscope/support",
+  ]);
+});
