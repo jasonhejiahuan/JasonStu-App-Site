@@ -34,6 +34,10 @@ for (const [pathname, expected, canonical] of routeCases) {
     const response = await render(pathname);
     assert.equal(response.status, 200);
     assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+    assert.equal(
+      response.headers.get("x-robots-tag"),
+      "max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+    );
     const html = await response.text();
     assert.match(html, expected);
     assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/i);
@@ -73,13 +77,20 @@ for (const [pathname, expected, canonical] of routeCases) {
 test("returns a real not-found response", async () => {
   const response = await render("/not-a-real-app");
   assert.equal(response.status, 404);
-  assert.match(await response.text(), /outside the collection/i);
+  assert.equal(
+    response.headers.get("x-robots-tag"),
+    "max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+  );
+  const html = await response.text();
+  assert.match(html, /outside the collection/i);
+  assert.match(html, /<meta name="robots" content="noindex"/i);
 });
 
 test("allows crawlers and advertises the canonical sitemap", async () => {
   const response = await render("/robots.txt");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/plain\b/i);
+  assert.equal(response.headers.get("x-robots-tag"), null);
   const body = await response.text();
   assert.match(body, /User-Agent: \*/i);
   assert.match(body, /Allow: \//i);
@@ -91,6 +102,7 @@ test("limits sitemap URLs to the canonical apps hostname", async () => {
   const response = await render("/sitemap.xml");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /xml/i);
+  assert.equal(response.headers.get("x-robots-tag"), null);
   const body = await response.text();
   const locations = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   assert.deepEqual(locations, [

@@ -199,6 +199,10 @@ runtime, maintenance, and privacy cost.
 - `/robots.txt` permits all user agents to crawl this host and points to the
   canonical `/sitemap.xml`. The sitemap contains only canonical
   `apps.jasonstu.cc` routes.
+- HTML responses explicitly permit unrestricted search-result previews through
+  `X-Robots-Tag: max-snippet:-1, max-image-preview:large, max-video-preview:-1`.
+  This preview policy does not override the framework-authored `noindex` on real
+  `404` documents; non-HTML crawler resources do not receive the header.
 - No private device names, addresses, identifiers, or captured user interface
   data from the inspected development machine are published.
 
