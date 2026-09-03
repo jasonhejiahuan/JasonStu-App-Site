@@ -24,6 +24,9 @@ async function render(pathname) {
 
 const routeCases = [
   ["/", /Independent apps/, "https://apps.jasonstu.cc"],
+  ["/trackpad-wizard", /Make the surface visible/, "https://apps.jasonstu.cc/trackpad-wizard"],
+  ["/trackpad-wizard/privacy", /Experiments stay on your Mac/, "https://apps.jasonstu.cc/trackpad-wizard/privacy"],
+  ["/trackpad-wizard/support", /Support starts with what happened/, "https://apps.jasonstu.cc/trackpad-wizard/support"],
   ["/linkscope", /Inspect the wireless state macOS actually exposes/, "https://apps.jasonstu.cc/linkscope"],
   ["/linkscope/privacy", /keeps inspection local/, "https://apps.jasonstu.cc/linkscope/privacy"],
   ["/linkscope/support", /Support begins with reproducible evidence/, "https://apps.jasonstu.cc/linkscope/support"],
@@ -45,9 +48,30 @@ for (const [pathname, expected, canonical] of routeCases) {
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical}"`));
     assert.match(html, />JasonStu<\/span><span>Apps<\/span>/);
 
-    if (pathname === "/" || pathname === "/linkscope") {
+    if (pathname === "/" || pathname === "/linkscope" || pathname === "/trackpad-wizard") {
       assert.match(html, /jasonstu-logo\.svg/);
       assert.match(html, /jasonstu-logo-dark\.png/);
+    }
+
+    if (pathname === "/") {
+      assert.match(html, /href="\/trackpad-wizard"/);
+      assert.match(html, /macOS 26\+ \/ Public release/);
+      assert.match(html, /href="\/linkscope"/);
+    }
+
+    if (pathname === "/trackpad-wizard") {
+      assert.match(html, /https:\/\/apps\.jasonstu\.cc\/trackpad-wizard-overview\.png/);
+      assert.doesNotMatch(html, /https:\/\/apps\.jasonstu\.cc\/og\.png/);
+      assert.match(html, /One surface\. Six ways to understand it/);
+      assert.match(html, /Touch Lab/);
+      assert.match(html, /Gesture Studio/);
+      assert.match(html, /Haptic Composer/);
+      assert.match(html, /System mode/);
+      assert.match(html, /Enhanced Mode/);
+      assert.match(html, /Signed and notarized DMG/);
+      assert.match(html, /Trackpad-Wizard-0\.3\.0-build-4\.dmg/);
+      assert.match(html, /href="\/trackpad-wizard\/privacy"/);
+      assert.match(html, /href="\/trackpad-wizard\/support"/);
     }
 
     if (pathname === "/linkscope") {
@@ -107,6 +131,9 @@ test("limits sitemap URLs to the canonical apps hostname", async () => {
   const locations = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   assert.deepEqual(locations, [
     "https://apps.jasonstu.cc/",
+    "https://apps.jasonstu.cc/trackpad-wizard",
+    "https://apps.jasonstu.cc/trackpad-wizard/privacy",
+    "https://apps.jasonstu.cc/trackpad-wizard/support",
     "https://apps.jasonstu.cc/linkscope",
     "https://apps.jasonstu.cc/linkscope/privacy",
     "https://apps.jasonstu.cc/linkscope/support",

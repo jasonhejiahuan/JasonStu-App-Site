@@ -1,4 +1,9 @@
 export function SiteHeader({ product }: { product?: string }) {
+  const products = [
+    { name: "Trackpad Wizard", href: "/trackpad-wizard" },
+    { name: "LinkScope", href: "/linkscope" },
+  ];
+
   return (
     <header className="site-header">
       <a className="collection-mark" href="/" aria-label="JasonStu Apps home">
@@ -7,7 +12,9 @@ export function SiteHeader({ product }: { product?: string }) {
       </a>
       <nav aria-label="Primary navigation">
         {product ? <span className="current-product">/ {product}</span> : null}
-        <a href="/linkscope">LinkScope</a>
+        {products
+          .filter((item) => item.name !== product)
+          .map((item) => <a href={item.href} key={item.href}>{item.name}</a>)}
       </nav>
     </header>
   );

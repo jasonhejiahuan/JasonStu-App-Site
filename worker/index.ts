@@ -1,8 +1,12 @@
 /** Cloudflare Worker entry point for the JasonStu Apps site. */
 import handler from "vinext/server/app-router-entry";
 
+interface AssetFetcher {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
 interface Env {
-  ASSETS: Fetcher;
+  ASSETS: AssetFetcher;
 }
 
 interface ExecutionContext {

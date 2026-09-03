@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1731,
         height: 909,
-        alt: "LinkScope, the first product in the JasonStu Apps collection.",
+        alt: "JasonStu Apps with Trackpad Wizard and LinkScope product motifs.",
       },
     ],
   },

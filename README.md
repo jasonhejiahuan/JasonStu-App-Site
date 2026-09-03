@@ -6,6 +6,9 @@ with vinext and a Cloudflare Worker-compatible server-rendered output.
 Current public routes:
 
 - `/` — collection home
+- `/trackpad-wizard` — Trackpad Wizard product exploration and verified download
+- `/trackpad-wizard/privacy` — current implementation privacy notes
+- `/trackpad-wizard/support` — Trackpad Wizard support path
 - `/linkscope` — LinkScope product exploration
 - `/linkscope/privacy` — current implementation privacy notes
 - `/linkscope/support` — LinkScope support path
@@ -24,4 +27,3 @@ npm test
 Read `AGENTS.md`, then `DESIGN_MANUAL.md`, before substantial work. The governing
 design, accessibility, browser, progressive-enhancement, and performance policy
 is in `DESIGN_GUIDELINES.md`.
-

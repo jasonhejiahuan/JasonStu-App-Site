@@ -11,7 +11,7 @@ export default function Home() {
       <SiteHeader />
       <main id="main-content" className="collection-home">
         <div className="collection-intro">
-          <p className="eyebrow">Collection / 01</p>
+          <p className="eyebrow">Collection / 02</p>
           <h1>Independent apps,<br className="wide-break" /> published with a point of view.</h1>
           <p>
             JasonStu Apps is a growing collection of software. Each product keeps
@@ -21,9 +21,26 @@ export default function Home() {
 
         <section className="collection-index" aria-labelledby="collection-title">
           <h2 id="collection-title">Public apps</h2>
+          <a className="product-row product-row-trackpad" href="/trackpad-wizard">
+            <picture>
+              <source srcSet="/trackpad-wizard-icon.webp" type="image/webp" />
+              <img src="/trackpad-wizard-icon.png" width="1024" height="1024" alt="" />
+            </picture>
+            <span className="product-row-identity">
+              <span className="product-row-name">Trackpad Wizard</span>
+              <small>macOS 26+ / Public release</small>
+            </span>
+            <span className="product-row-description">
+              Inspect touch and gestures, compose haptics, and map the trackpad under your fingers.
+            </span>
+            <span aria-hidden="true">↗</span>
+          </a>
           <a className="product-row" href="/linkscope">
             <img src="/linkscope-mark.svg" width="465" height="432" alt="" />
-            <span className="product-row-name">LinkScope</span>
+            <span className="product-row-identity">
+              <span className="product-row-name">LinkScope</span>
+              <small>macOS / Active development</small>
+            </span>
             <span className="product-row-description">
               Inspect wireless-accessory state across public macOS frameworks.
             </span>

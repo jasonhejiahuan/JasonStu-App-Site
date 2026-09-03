@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository: 2026-08-20
+Last verified against the repository: 2026-09-03
 
 This document describes the website as it currently exists. It is not the
 design constitution or a changelog. Rewrite stale statements when meaningful
@@ -9,14 +9,14 @@ implementation, design, routing, browser, or deployment decisions change.
 
 ## Session Resume
 
-- **Project status:** The focused second-pass refinement is publicly deployed
-  at the canonical Sites production origin. The collection home and LinkScope chapter
-  retain their editorial architecture while improving product fidelity,
-  responsive typography, official brand integration, and diagnostic legibility.
+- **Project status:** The collection now contains two independent app chapters.
+  LinkScope retains its device-led inspector; Trackpad Wizard adds a separate,
+  screenshot-led tactile chapter with a verified public download.
 - **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
   social metadata use this origin. The Cloudflare DNS connection, Sites custom
   hostname, and TLS certificate are active.
-- **Implemented routes:** `/`, `/linkscope`, `/linkscope/privacy`, and
+- **Implemented routes:** `/`; `/trackpad-wizard`, `/trackpad-wizard/privacy`,
+  `/trackpad-wizard/support`; and `/linkscope`, `/linkscope/privacy`,
   `/linkscope/support`. Unknown routes return a real `404` document.
 - **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, and a Cloudflare
   Worker-compatible Sites runtime. npm is the package manager.
@@ -28,7 +28,10 @@ implementation, design, routing, browser, or deployment decisions change.
   LinkScope is a device-led technical chapter derived from the current app,
   supplied screenshots, production mark, transport/provider provenance,
   availability states, and diagnostic model. Its approved brief is
-  `docs/art-direction/linkscope.md`.
+  `docs/art-direction/linkscope.md`. Trackpad Wizard follows a physical-surface
+  signal from contact through gesture interpretation to haptic or shortcut
+  response, using the production icon and two real application captures. Its
+  approved brief is `docs/art-direction/trackpad-wizard.md`.
 - **Browser enhancements:** CSS `:has()` powers device-detail tab selection,
   `content-visibility` defers below-fold rendering, and cross-document View
   Transitions provide optional continuity. Each has a complete CSS/native
@@ -36,13 +39,15 @@ implementation, design, routing, browser, or deployment decisions change.
 - **Important constraints:** Preserve real nested routes, native navigation,
   source-grounded product claims, a no-JavaScript baseline, first-class Light
   and Dark appearance, and the absence of unnecessary runtime dependencies.
-- **Known limitations:** The build has not yet had physical Safari, Firefox, or
-  assistive-technology QA;
-  LinkScope Lite is in development testing but has no verified public App Store
-  or direct-download destination yet; the privacy page is a source-grounded
-  implementation note rather than a final distribution policy.
-- **Next recommended work:** Run a real WebKit/Firefox/VoiceOver pass and add a
-  download only when a signed public release destination is verified.
+- **Known limitations:** The current source has not yet had physical Safari,
+  Firefox, 200% zoom, or assistive-technology QA. Trackpad Wizard's current
+  repository captures document Light appearance; the page preserves that state
+  rather than fabricating Dark screenshots. LinkScope Lite remains in development
+  testing without a verified public destination. Both privacy pages are
+  source-grounded implementation notes, not final distribution policies.
+- **Next recommended work:** Run the physical browser and VoiceOver matrix,
+  replace Trackpad Wizard captures when its interface changes materially, and add
+  a LinkScope download only when its signed public release destination is verified.
 
 ## Authority and update rule
 
@@ -60,15 +65,18 @@ constitution to match it.
 | Route | Current role | Rendering |
 | --- | --- | --- |
 | `/` | JasonStu Apps collection home and public-app index | Server-rendered document |
+| `/trackpad-wizard` | Trackpad Wizard product chapter, release facts, and verified download | Server-rendered document |
+| `/trackpad-wizard/privacy` | Current implementation privacy notes | Server-rendered document |
+| `/trackpad-wizard/support` | Current support path and issue-reporting guidance | Server-rendered document |
 | `/linkscope` | LinkScope product chapter and explanatory inspector | Server-rendered document |
 | `/linkscope/privacy` | Current implementation privacy notes | Server-rendered document |
 | `/linkscope/support` | Current support path and issue-reporting guidance | Server-rendered document |
 | unmatched route | Collection-aware not-found page | Real HTTP `404` |
 
 Routes are durable lowercase paths. Direct requests, reload, Back, Forward,
-bookmarks, and copied URLs use normal browser semantics. Future apps should own
-their own top-level slug; they should not inherit LinkScope's composition by
-default.
+bookmarks, and copied URLs use normal browser semantics. Each app owns a top-level
+slug and an independent composition; Trackpad Wizard intentionally does not
+inherit LinkScope's application-window reconstruction.
 
 ## Frontend, build, and rendering architecture
 
@@ -83,6 +91,10 @@ default.
   component. Its responsive composition transforms from a desktop sidebar/detail
   window into a stacked device browser and detail workspace; it is never scaled
   down into unreadable miniature desktop UI.
+- Trackpad Wizard uses semantic capability and mode sequences plus real, current
+  repository captures. It has no simulated touch surface or hydrated interaction;
+  WebP presentation copies reduce transfer while PNG/JPEG sources preserve
+  truthful image and social-preview fallbacks.
 - Product and document links are ordinary `<a>` elements. Cross-document
   enhancement may animate compatible navigation, but routing never depends on
   it.
@@ -93,12 +105,16 @@ The shared shell is intentionally small: a skip link, the original text-only
 header wordmark, primary route context, and concise footer where appropriate.
 The supplied JasonStu logo appears only as a quiet footer publishing signature;
 it does not alter or compete with the established header. The collection home
-presents one editorial product row rather than a generic equal-card grid.
+presents two typographic product rows rather than a generic equal-card grid. The
+header exposes both products on the collection route and the other product from
+within each chapter.
 
-Product facts currently live near their route because only one public app is
-implemented. Introduce a shared data model only when a second real consumer
-proves which facts are genuinely shared. Product claims must continue to be
-traceable to current app source, assets, documentation, or inspected behavior.
+The second product proved that action groups, primary links, closing links, the
+header and publishing signature are genuinely shared, so their styling lives in
+the shared layer. Product facts remain near their owning routes; no shared data
+model is introduced while release and availability semantics still differ.
+Every claim remains traceable to current source, assets, documentation, release
+metadata, or inspected behavior.
 
 ## Current art direction
 
@@ -115,6 +131,19 @@ The page rhythm moves from a quiet icon-led opening to a dense provider
 inspector, a high-contrast availability chapter, a measured diagnostic trace,
 and practical development facts. It deliberately omits pricing, testimonials,
 conversion claims, fabricated screenshots, and an unverified download action.
+
+Trackpad Wizard's thesis is “follow the physical surface from contact to
+response.” Its silver production icon, ultraviolet-violet active-state accent,
+real Overview and Gesture Studio captures, six-workspace ledger, and explicit
+System/Enhanced boundary form its identity. The page does not simulate trackpad
+input in the browser. Its rhythm moves from a quiet icon and release action to a
+wide application capture, a faster capability ledger, a second focused capture,
+a high-contrast mode boundary, and verified release facts.
+
+The direct download resolves to the current 0.3.0 (Build 4) notarized DMG. The
+page names macOS 26+, Developer ID signing, notarization, stapling, SHA-256
+verification, MPL-2.0 source, local data behavior, and Accessibility scope only
+because each is supported by the current app source or public release.
 
 ## Appearance and typography
 
@@ -133,11 +162,12 @@ conversion claims, fabricated screenshots, and an unverified download action.
 ## Responsive behavior
 
 Layout uses fluid type, spacing, intrinsic grids, and content-driven changes.
-Wide screens place the product mark, thesis, provider rail, and technical fields
-in asymmetrical compositions. Narrow screens change reading order and density,
-turn technical side material into a vertical trace, preserve large targets, and
-make data tables horizontally inspectable where necessary. Safe-area-aware
-gutters and touch sizing are part of the base CSS.
+Wide screens place each product's identity and evidence in its own asymmetrical
+composition. LinkScope turns technical side material into a vertical trace on
+narrow screens. Trackpad Wizard turns its capability ledger, mode comparison,
+signal path, release facts, and header navigation into single-column sequences
+without changing semantic source order; screenshots retain their native aspect
+ratios. Safe-area-aware gutters and touch sizing are part of the base CSS.
 
 ## Accessibility implementation
 
@@ -146,8 +176,9 @@ gutters and touch sizing are part of the base CSS.
   document structure.
 - A visible-on-focus skip link and authored `:focus-visible` treatment support
   keyboard navigation. Provider choices are native radios with labels.
-- Decorative uses of the product mark have empty alternative text; meaningful
-  product reconstructions have captions and textual equivalents.
+- Decorative uses of product marks have empty alternative text. Meaningful
+  reconstructions and screenshots have specific alternatives, captions, capture
+  dates, appearance and locale notes, and adjacent textual equivalents.
 - Motion respects `prefers-reduced-motion`; forced-colors rules preserve visible
   controls and focus. Core content and navigation work without JavaScript.
 - Automated rendered-document checks exist. Physical VoiceOver, switch, zoom,
@@ -167,10 +198,12 @@ code paths at launch.
 
 ## Performance architecture
 
-The application ships no custom client bundle for LinkScope behavior, no remote
-font, no analytics, and no third-party runtime. The product mark is a compact
-local SVG. The two social images are local and are not requested during normal
-page rendering. Below-fold sections opt into deferred rendering where supported.
+The application ships no custom product-interaction bundle, remote font,
+analytics, or third-party runtime. LinkScope's mark is a compact local SVG.
+Trackpad Wizard uses a lossless WebP icon and a 96 KB WebP Overview presentation
+copy, while keeping authored PNG/JPEG fallbacks. Social assets are local and are
+not requested during ordinary collection rendering. Below-fold sections opt into
+deferred rendering where supported.
 
 The current vinext navigation/hydration runtime transfers about 111 KB gzipped
 before product interaction, roughly 31 KB above the constitution's initial
@@ -191,11 +224,18 @@ runtime, maintenance, and privacy cost.
   copies of the supplied official Light and Dark brand assets. Native `<picture>`
   selection uses them only in the footer, without client-side appearance logic.
 - `public/favicon.svg` is a compact mark treatment.
-- `public/og.png` and `public/linkscope-social.png` are the generated collection
-  and LinkScope social-preview assets; they are not page-background decoration.
-- Route metadata resolves against `https://apps.jasonstu.cc`. LinkScope owns its
-  social image; privacy and support use summary metadata without inheriting the
-  collection image.
+- `public/trackpad-wizard-icon.png` is a copy of the current production icon;
+  `public/trackpad-wizard-icon.webp` is its lossless presentation copy.
+- `public/trackpad-wizard-overview.png` and
+  `public/trackpad-wizard-gesture.jpg` are real repository captures from
+  2026-08-30. `public/trackpad-wizard-overview.webp` is an efficient in-page
+  presentation copy; the PNG also serves Trackpad Wizard social metadata.
+- `public/og.png` is the refreshed two-product collection social card;
+  `public/linkscope-social.png` remains LinkScope's route-specific card. None is
+  used as page-background decoration.
+- Route metadata resolves against `https://apps.jasonstu.cc`. Each product page
+  owns its social image; privacy and support routes clear inherited images and
+  use summary metadata.
 - `/robots.txt` permits all user agents to crawl this host and points to the
   canonical `/sitemap.xml`. The sitemap contains only canonical
   `apps.jasonstu.cc` routes.
@@ -210,7 +250,7 @@ runtime, maintenance, and privacy cost.
 
 ChatGPT Sites is the selected production runtime and host. The Sites project is
 `appgprj_6a8687dcb59881918e9895b01b15b506` with slug `jasonstu-apps`; the
-current second-pass deployment is public. `.openai/hosting.json` records the
+production site is public. `.openai/hosting.json` records the
 opaque project ID and confirms that D1 and R2 are unused. The custom hostname
 `apps.jasonstu.cc` is active through a DNS-only Cloudflare CNAME; Sites reports
 both the hostname and TLS certificate active. Only the exact hostname is bound;
@@ -224,6 +264,10 @@ Site.
 - Keep the CSS-only, device-led inspector while it communicates the product
   accurately; do not restore a provider-first selector or hydrate it for cosmetic
   state management.
+- Keep Trackpad Wizard screenshot-led and static while real captures communicate
+  the product; do not build a decorative browser simulation of touch or haptics.
+- Publish Trackpad Wizard's direct download only while the matching notarized DMG
+  and checksum remain verifiable at the declared release URL.
 - Do not add Tailwind, a component library, a CMS, D1/R2, analytics, or an image
   pipeline without a demonstrated requirement.
 - Do not turn the collection into an equal grid of generic cards or future app
@@ -240,8 +284,8 @@ Site.
   destination will become the first verified public release?
 - Does a later collection need an Auto/Light/Dark selector in addition to the
   current system-preference behavior?
-- When a second app is ready, which shell and content facts prove reusable, and
-  which must stay product-specific?
+- Should future product additions justify a shared typed index for name, route,
+  status and artwork, or do their availability differences still favor local data?
 - Physical Safari/WebKit, Firefox, high-zoom, VoiceOver, and energy-use checks
   remain required before treating the first implementation as fully hardened.
 
@@ -251,6 +295,7 @@ Site.
    reduced-motion checks; record only actionable differences.
 2. Reconcile LinkScope release metadata and add a download only after its signed
    distribution path is public and verified.
-3. Update the privacy document when distribution or network behavior changes.
-4. Begin any second app with a new product-evidence review and art-direction
-   brief rather than copying the LinkScope page.
+3. Replace Trackpad Wizard captures after material interface changes and record
+   both Light and Dark evidence when the app supplies both.
+4. Update either privacy document when its app's storage, permission, network,
+   or distribution behavior changes.

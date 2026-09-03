@@ -1,4 +1,4 @@
-@layer reset, tokens, base, shared, collection, linkscope, responsive, enhancements;
+@layer reset, tokens, base, shared, collection, linkscope, trackpad, responsive, enhancements;
 
 @layer reset {
   *, *::before, *::after { box-sizing: border-box; }
@@ -96,6 +96,7 @@
   .collection-mark { display: inline-flex; gap: 0.35rem; font-weight: 650; text-decoration: none; }
   .collection-mark span:last-child { color: var(--text-secondary); }
   .site-header nav { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2.5rem); }
+  .site-header nav a { display: inline-flex; align-items: center; min-height: 2.75rem; }
   .current-product { color: var(--text-secondary); }
   .eyebrow {
     color: var(--text-secondary);
@@ -103,6 +104,28 @@
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+  .opening-actions,
+  .closing-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+  }
+  .opening-actions { margin-block-start: 2.25rem; }
+  .opening-actions a,
+  .closing-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    text-underline-offset: 0.25em;
+  }
+  .primary-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    color: var(--accent-strong);
+    font-weight: 620;
   }
   .visually-hidden {
     position: absolute;
@@ -131,6 +154,74 @@
   .footer-signature > span { color: var(--text-secondary); font-size: 0.62rem; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; }
 }
 
+@layer trackpad {
+  .trackpad-page {
+    --trackpad-accent: #5b55ee;
+    --trackpad-accent-strong: #3f36cf;
+    --trackpad-silver: #e5e8ed;
+    overflow: clip;
+  }
+
+  .trackpad-opening {
+    display: grid;
+    grid-template-columns: minmax(22rem, 1.15fr) minmax(18rem, 0.85fr);
+    gap: 2rem clamp(3rem, 8vw, 9rem);
+    align-items: center;
+    min-height: calc(100svh - var(--header-height));
+    padding: clamp(3rem, 7vw, 7rem) var(--gutter) 0;
+  }
+
+  .trackpad-opening-copy { max-width: 68rem; }
+  .trackpad-opening h1 { max-width: 9ch; margin-block: 1.5rem 2rem; }
+  .trackpad-lede {
+    max-width: 48rem;
+    color: var(--text-secondary);
+    font-size: clamp(1.08rem, 1.45vw, 1.38rem);
+  }
+  .trackpad-download { color: var(--trackpad-accent-strong); }
+
+  .trackpad-icon-stage { margin: 0; text-align: end; }
+  .trackpad-icon-stage picture { display: block; }
+  .trackpad-icon-stage img { width: min(29rem, 100%); margin-inline-start: auto; }
+  .trackpad-icon-stage figcaption {
+    margin-block-start: 1rem;
+    color: var(--text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+  }
+
+  .trackpad-release-rail {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-block-start: clamp(2rem, 5vw, 5rem);
+    border-block-start: 1px solid var(--line-strong);
+  }
+  .trackpad-release-rail div {
+    min-height: 6.5rem;
+    padding: 1rem 0;
+    border-block-end: 1px solid var(--line);
+  }
+  .trackpad-release-rail div + div {
+    padding-inline-start: clamp(1rem, 3vw, 3rem);
+    border-inline-start: 1px solid var(--line);
+  }
+  .trackpad-release-rail dt {
+    margin-block-end: 1.2rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+  }
+  .trackpad-release-rail dd { font-weight: 580; }
+
+  @media (prefers-color-scheme: dark) {
+    .trackpad-page {
+      --trackpad-accent: #a7a3ff;
+      --trackpad-accent-strong: #c3c0ff;
+      --trackpad-silver: #252930;
+    }
+  }
+}
+
 @layer collection {
   .collection-home { padding: var(--chapter) var(--gutter); }
   .collection-intro {
@@ -155,10 +246,24 @@
     text-decoration: none;
   }
   .product-row:hover .product-row-name,
-  .product-row:focus-visible .product-row-name { color: var(--accent); }
+  .product-row:focus-visible .product-row-name { color: var(--row-accent, var(--accent)); }
+  .product-row + .product-row { border-block-start: 0; }
+  .product-row picture { display: block; }
   .product-row img { width: 4rem; }
+  .product-row-trackpad { --row-accent: #4d44d8; }
+  .product-row-identity { display: grid; gap: 0.15rem; }
   .product-row-name { font-size: clamp(1.7rem, 3vw, 3.2rem); font-weight: 560; letter-spacing: -0.035em; }
+  .product-row-identity small {
+    color: var(--text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+  }
   .product-row-description { max-width: 32rem; color: var(--text-secondary); }
+
+  @media (prefers-color-scheme: dark) {
+    .product-row-trackpad { --row-accent: #b2aeff; }
+  }
 }
 
 @layer linkscope {
@@ -197,9 +302,6 @@
   .linkscope-intro { align-self: center; max-width: 70rem; }
   .linkscope-intro h1 { margin-block: 1.5rem 2rem; }
   .lede { max-width: 46rem; color: var(--text-secondary); font-size: clamp(1.08rem, 1.45vw, 1.38rem); }
-  .opening-actions { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; margin-block-start: 2.25rem; }
-  .opening-actions a { text-underline-offset: 0.25em; }
-  .primary-link { display: inline-flex; align-items: center; min-height: 3rem; color: var(--accent-strong); font-weight: 620; }
   .provider-rail {
     grid-column: 1 / -1;
     display: grid;
@@ -242,7 +344,21 @@
     .collection-intro { grid-template-columns: 1fr; min-height: 64svh; }
     .collection-intro h1 { max-width: 12ch; line-height: 1; }
     .wide-break { display: none; }
-    .linkscope-opening { grid-template-columns: 1fr; }
+    .linkscope-opening,
+    .trackpad-opening { grid-template-columns: 1fr; }
+    .trackpad-section-intro,
+    .trackpad-gesture-chapter,
+    .trackpad-release-close { grid-template-columns: 1fr; }
+    .trackpad-section-intro h2,
+    .trackpad-section-intro > p:not(.eyebrow) { grid-column: 1; }
+    .trackpad-icon-stage { text-align: start; }
+    .trackpad-icon-stage img { width: min(21rem, 54vw); margin-inline: 0; }
+    .trackpad-lens-list li {
+      grid-template-columns: 2.5rem minmax(12rem, 0.55fr) minmax(18rem, 1fr);
+    }
+    .trackpad-lens-boundary { grid-column: 2 / -1; }
+    .trackpad-gesture-copy { max-width: 48rem; }
+    .trackpad-release-close img { width: min(16rem, 48vw); }
     .scope-mark-stage { min-height: 24rem; order: 2; }
     .linkscope-intro { order: 1; }
     .provider-rail { order: 3; grid-template-columns: repeat(7, minmax(9rem, 1fr)); margin-inline: calc(-1 * var(--gutter)); padding-inline-start: var(--gutter); }
@@ -251,8 +367,9 @@
   }
 
   @media (max-width: 38rem) {
-    :root { --header-height: 4.25rem; }
-    .site-header { gap: 1rem; }
+    :root { --header-height: 7.4rem; }
+    .site-header { flex-wrap: wrap; gap: 0.75rem 1rem; }
+    .site-header nav { width: 100%; gap: 1.25rem; }
     .current-product { display: none; }
     h1, h2 { font-weight: 520; letter-spacing: -0.032em; }
     h1 { line-height: 1.01; }
@@ -264,6 +381,10 @@
     .scope-mark-stage { min-height: 20rem; }
     .scope-mark-stage img { width: min(18rem, 72%); }
     .scope-caption { inset-inline-start: auto; inset-inline-end: 0; }
+    .trackpad-icon-stage { text-align: start; }
+    .trackpad-icon-stage img { width: min(19rem, 58vw); margin-inline: 0; }
+    .trackpad-release-rail { grid-template-columns: 1fr; }
+    .trackpad-release-rail div + div { padding-inline-start: 0; border-inline-start: 0; }
     .opening-facts div { grid-template-columns: 1fr; gap: 0.2rem; }
     .site-footer { flex-direction: column; }
   }
@@ -274,6 +395,7 @@
 
   @media (forced-colors: active) {
     .scope-mark-stage::before { border-color: CanvasText; }
+    .trackpad-boundary { border-block: 1px solid CanvasText; }
   }
 }
 
@@ -623,9 +745,222 @@
   }
   .linkscope-close img { width: min(22rem, 80%); justify-self: center; }
   .linkscope-close h2 { margin-block: 1.5rem 2rem; }
-  .closing-links { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; }
-  .closing-links a { text-underline-offset: 0.25em; }
   .linkscope-footer a { text-underline-offset: 0.25em; }
+}
+
+@layer trackpad {
+  .trackpad-overview-chapter,
+  .trackpad-lenses-chapter,
+  .trackpad-gesture-chapter,
+  .trackpad-boundary,
+  .trackpad-release-chapter {
+    padding: var(--chapter) var(--gutter);
+  }
+
+  .trackpad-section-intro {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.3fr) minmax(20rem, 0.7fr);
+    gap: 1.5rem clamp(2rem, 8vw, 9rem);
+  }
+  .trackpad-section-intro h2,
+  .trackpad-section-intro > p:not(.eyebrow) { grid-column: 2; }
+  .trackpad-section-intro > p:not(.eyebrow) {
+    max-width: 48rem;
+    color: var(--text-secondary);
+    font-size: 1.08rem;
+  }
+
+  .trackpad-overview-chapter { background: var(--trackpad-silver); }
+  .trackpad-screenshot { margin: clamp(3.5rem, 8vw, 8rem) 0 0; }
+  .trackpad-screenshot img {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: #f4f4f4;
+  }
+  .trackpad-screenshot figcaption {
+    max-width: 62rem;
+    margin-block-start: 1rem;
+    color: var(--text-secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.7rem;
+  }
+  .trackpad-overview-shot { max-width: 102.5rem; margin-inline: auto; }
+  .trackpad-surface-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 76rem;
+    margin: clamp(3rem, 6vw, 6rem) 0 0 auto;
+    border-block-start: 1px solid var(--line-strong);
+  }
+  .trackpad-surface-facts div {
+    padding: 1rem 0;
+    border-block-end: 1px solid var(--line);
+  }
+  .trackpad-surface-facts div + div {
+    padding-inline-start: clamp(1rem, 3vw, 3rem);
+    border-inline-start: 1px solid var(--line);
+  }
+  .trackpad-surface-facts dt {
+    margin-block-end: 0.7rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+  }
+  .trackpad-surface-facts dd { font-weight: 560; }
+
+  .trackpad-lens-list {
+    padding: 0;
+    margin-block-start: clamp(4rem, 9vw, 9rem);
+    list-style: none;
+    border-block-start: 1px solid var(--line-strong);
+  }
+  .trackpad-lens-list li {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(12rem, 0.52fr) minmax(18rem, 1fr) minmax(12rem, 0.5fr);
+    gap: 0.75rem clamp(1.5rem, 4vw, 5rem);
+    align-items: baseline;
+    padding-block: clamp(1.3rem, 2.7vw, 2.3rem);
+    border-block-end: 1px solid var(--line);
+  }
+  .trackpad-lens-number,
+  .trackpad-lens-boundary {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+  }
+  .trackpad-lens-number { color: var(--trackpad-accent); }
+  .trackpad-lens-list h3 {
+    font-size: clamp(1.45rem, 2.6vw, 2.65rem);
+    font-weight: 560;
+    letter-spacing: -0.035em;
+  }
+  .trackpad-lens-list p { max-width: 46rem; color: var(--text-secondary); }
+  .trackpad-lens-boundary { color: var(--text-secondary); }
+
+  .trackpad-gesture-chapter {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.33fr) minmax(30rem, 0.67fr);
+    gap: clamp(3rem, 8vw, 9rem);
+    align-items: center;
+    background: var(--canvas-muted);
+  }
+  .trackpad-gesture-copy h2 { margin-block: 1.5rem 2rem; }
+  .trackpad-gesture-copy > p:last-child {
+    max-width: 40rem;
+    color: var(--text-secondary);
+    font-size: 1.08rem;
+  }
+  .trackpad-gesture-shot { margin: 0; }
+
+  .trackpad-boundary {
+    --boundary-text: #f5f4fb;
+    --boundary-secondary: #bcbac8;
+    --boundary-line: #484653;
+    --boundary-accent: #aaa6ff;
+    background: #191820;
+    color: var(--boundary-text);
+  }
+  .trackpad-boundary .eyebrow,
+  .trackpad-boundary-intro > p:not(.eyebrow) { color: var(--boundary-secondary); }
+  .trackpad-mode-comparison {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-block-start: clamp(4rem, 8vw, 8rem);
+    border-block: 1px solid var(--boundary-line);
+  }
+  .trackpad-mode-comparison article { padding: clamp(2rem, 5vw, 5rem) 0; }
+  .trackpad-mode-comparison article + article {
+    padding-inline-start: clamp(2rem, 6vw, 7rem);
+    border-inline-start: 1px solid var(--boundary-line);
+  }
+  .trackpad-mode-comparison article:first-child { padding-inline-end: clamp(2rem, 6vw, 7rem); }
+  .trackpad-mode-index {
+    color: var(--boundary-accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .trackpad-mode-comparison h3 {
+    margin-block: 1.2rem 1.5rem;
+    font-size: clamp(1.8rem, 3.2vw, 3.4rem);
+    font-weight: 540;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  .trackpad-mode-comparison article > p:not(.trackpad-mode-index) {
+    max-width: 42rem;
+    color: var(--boundary-secondary);
+  }
+  .trackpad-mode-comparison strong {
+    display: block;
+    margin-block-start: 2rem;
+    color: var(--boundary-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .trackpad-signal-path {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+    margin-block-start: clamp(4rem, 8vw, 8rem);
+    list-style: none;
+  }
+  .trackpad-signal-path li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.2rem 1rem;
+    min-height: 7.5rem;
+    padding: 1.2rem 0;
+    border-block-start: 1px solid var(--boundary-line);
+  }
+  .trackpad-signal-path li + li {
+    padding-inline-start: clamp(1rem, 3vw, 3rem);
+    border-inline-start: 1px solid var(--boundary-line);
+  }
+  .trackpad-signal-path span {
+    grid-row: 1 / span 2;
+    color: var(--boundary-accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.7rem;
+  }
+  .trackpad-signal-path strong { font-size: 1.15rem; }
+  .trackpad-signal-path small { color: var(--boundary-secondary); }
+
+  .trackpad-release-chapter { background: var(--trackpad-silver); }
+  .trackpad-practical-facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-block-start: clamp(4rem, 8vw, 8rem);
+    border-block-start: 1px solid var(--line-strong);
+  }
+  .trackpad-practical-facts div {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.38fr) minmax(12rem, 0.62fr);
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-block-end: 1px solid var(--line);
+  }
+  .trackpad-practical-facts div:nth-child(odd) {
+    padding-inline-end: clamp(1rem, 3vw, 3rem);
+    border-inline-end: 1px solid var(--line);
+  }
+  .trackpad-practical-facts div:nth-child(even) { padding-inline-start: clamp(1rem, 3vw, 3rem); }
+  .trackpad-practical-facts dt { color: var(--text-secondary); }
+  .trackpad-practical-facts dd { font-weight: 560; }
+
+  .trackpad-release-close {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.28fr) minmax(20rem, 0.72fr);
+    gap: clamp(3rem, 10vw, 12rem);
+    align-items: center;
+    min-height: 68svh;
+    margin-block-start: clamp(3rem, 7vw, 7rem);
+    border-block-start: 1px solid var(--line);
+  }
+  .trackpad-release-close > picture { display: block; }
+  .trackpad-release-close img { width: min(20rem, 82%); }
+  .trackpad-release-close h2 { margin-block: 1.5rem 2rem; }
+  .trackpad-footer a { text-underline-offset: 0.25em; }
 }
 
 @layer shared {
@@ -655,7 +990,12 @@
   .document-facts div { display: grid; grid-template-columns: 0.34fr 0.66fr; gap: 1rem; padding-block: 1rem; border-block-end: 1px solid var(--line); }
   .document-facts dt { color: var(--text-secondary); }
   .document-nav { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding-block-start: 2rem; border-block-start: 1px solid var(--line); }
-  .document-nav a { text-underline-offset: 0.25em; }
+  .document-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    text-underline-offset: 0.25em;
+  }
   .not-found-page { display: grid; align-content: center; min-height: calc(100svh - var(--header-height)); padding: var(--chapter) var(--gutter); }
   .not-found-page h1 { max-width: 68rem; margin-block: 1.5rem 2rem; }
   .not-found-page a { width: fit-content; }
@@ -692,6 +1032,29 @@
   }
 
   @media (max-width: 44rem) {
+    .trackpad-surface-facts,
+    .trackpad-mode-comparison,
+    .trackpad-signal-path,
+    .trackpad-practical-facts { grid-template-columns: 1fr; }
+    .trackpad-surface-facts div + div,
+    .trackpad-signal-path li + li,
+    .trackpad-practical-facts div:nth-child(odd),
+    .trackpad-practical-facts div:nth-child(even) {
+      padding-inline: 0;
+      border-inline: 0;
+    }
+    .trackpad-lens-list li { grid-template-columns: 2.25rem 1fr; }
+    .trackpad-lens-list h3,
+    .trackpad-lens-list p,
+    .trackpad-lens-boundary { grid-column: 2; }
+    .trackpad-mode-comparison article,
+    .trackpad-mode-comparison article:first-child,
+    .trackpad-mode-comparison article + article { padding-inline: 0; }
+    .trackpad-mode-comparison article + article {
+      border-block-start: 1px solid var(--boundary-line);
+      border-inline-start: 0;
+    }
+    .trackpad-release-close { min-height: auto; padding-block-start: var(--chapter); }
     .linkscope-app-window { margin-inline: calc(-0.5 * var(--gutter)); border-radius: 0.9rem; }
     .app-toolbar-context span:first-child { display: none; }
     .device-browser { grid-template-columns: 1fr; }
@@ -737,7 +1100,12 @@
     .availability-chapter,
     .diagnostic-chapter,
     .practical-chapter,
-    .linkscope-close { content-visibility: auto; contain-intrinsic-size: auto 56rem; }
+    .linkscope-close,
+    .trackpad-overview-chapter,
+    .trackpad-lenses-chapter,
+    .trackpad-gesture-chapter,
+    .trackpad-boundary,
+    .trackpad-release-chapter { content-visibility: auto; contain-intrinsic-size: auto 56rem; }
   }
 
   @supports (view-transition-name: none) {
