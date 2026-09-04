@@ -1,0 +1,55 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jasonstu-apps",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "apps.jasonstu.cc",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "DEPLOYMENT_ENV": "production"
+  },
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "none"
+  },
+  "cache": {
+    "enabled": true
+  },
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
+  "env": {
+    "beta": {
+      "name": "jasonstu-apps-beta",
+      "routes": [
+        {
+          "pattern": "apps.beta.jasonstu.cc",
+          "custom_domain": true
+        }
+      ],
+      "vars": {
+        "DEPLOYMENT_ENV": "beta"
+      }
+    }
+  }
+}

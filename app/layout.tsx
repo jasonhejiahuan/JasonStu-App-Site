@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+// This collection is source-authored and has no request-specific content.
+// Revalidate hourly so Cloudflare can serve HTML from its edge cache while
+// deployments and editorial changes still propagate promptly.
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://apps.jasonstu.cc"),
   title: {

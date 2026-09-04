@@ -1,0 +1,21 @@
+# Content-hashed application assets can stay in browser caches indefinitely.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Named product media keeps a short browser lifetime so replacements propagate.
+/*.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.jpg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.webp
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/*.svg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Static assets bypass the Worker, so mirror its passive security headers here.
+/*
+  Content-Security-Policy: base-uri 'self'; frame-ancestors 'none'; object-src 'none'
+  Permissions-Policy: camera=(), geolocation=(), microphone=(), payment=(), usb=()
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY

@@ -201,7 +201,14 @@ export default function LinkScopePage() {
         </section>
 
         <section className="linkscope-close" aria-labelledby="close-title">
-          <img src="/linkscope-mark.svg" width="465" height="432" alt="" />
+          <img
+            src="/linkscope-mark.svg"
+            width="465"
+            height="432"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
           <div>
             <p className="eyebrow">LinkScope / Active development</p>
             <h2 id="close-title">Follow the evidence, including the gaps.</h2>

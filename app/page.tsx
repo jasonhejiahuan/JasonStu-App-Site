@@ -23,8 +23,14 @@ export default function Home() {
           <h2 id="collection-title">Public apps</h2>
           <a className="product-row product-row-trackpad" href="/trackpad-wizard">
             <picture>
-              <source srcSet="/trackpad-wizard-icon.webp" type="image/webp" />
-              <img src="/trackpad-wizard-icon.png" width="1024" height="1024" alt="" />
+              <source srcSet="/trackpad-wizard-icon-256.webp" type="image/webp" />
+              <img
+                src="/trackpad-wizard-icon.png"
+                width="256"
+                height="256"
+                alt=""
+                decoding="async"
+              />
             </picture>
             <span className="product-row-identity">
               <span className="product-row-name">Trackpad Wizard</span>

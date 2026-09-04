@@ -1,7 +1,7 @@
 # JasonStu Apps website
 
-The production website for the JasonStu Apps collection, built for ChatGPT Sites
-with vinext and a Cloudflare Worker-compatible server-rendered output.
+The production website for the JasonStu Apps collection, built with vinext and
+deployed as a server-rendered Cloudflare Worker with Static Assets.
 
 Current public routes:
 
@@ -23,6 +23,10 @@ npm run dev
 npm run build
 npm test
 ```
+
+Cloudflare deployment configuration lives in `wrangler.jsonc`. The production
+Worker serves `https://apps.jasonstu.cc`; the named `beta` environment serves the
+no-index staging origin at `https://apps.beta.jasonstu.cc`.
 
 Read `AGENTS.md`, then `DESIGN_MANUAL.md`, before substantial work. The governing
 design, accessibility, browser, progressive-enhancement, and performance policy

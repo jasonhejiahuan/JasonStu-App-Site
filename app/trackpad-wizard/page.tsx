@@ -104,6 +104,7 @@ export default function TrackpadWizardPage() {
                 width="1024"
                 height="1024"
                 alt="Trackpad Wizard app icon"
+                decoding="async"
               />
             </picture>
             <figcaption>System mode by default. Enhanced Mode is session-only.</figcaption>
@@ -137,6 +138,7 @@ export default function TrackpadWizardPage() {
                 height="1048"
                 alt="Trackpad Wizard Overview showing System mode, two detected trackpads, and shortcuts to its laboratories."
                 fetchPriority="high"
+                decoding="async"
               />
             </picture>
             <figcaption>
@@ -194,6 +196,7 @@ export default function TrackpadWizardPage() {
               height="768"
               alt="Trackpad Wizard Gesture Studio showing gesture measurements, a touch surface, and the native event stream."
               loading="lazy"
+              decoding="async"
             />
             <figcaption>
               Repository capture / Gesture Studio / English / Light appearance /
@@ -266,7 +269,14 @@ export default function TrackpadWizardPage() {
           <div className="trackpad-release-close">
             <picture>
               <source srcSet="/trackpad-wizard-icon.webp" type="image/webp" />
-              <img src="/trackpad-wizard-icon.png" width="1024" height="1024" alt="" />
+              <img
+                src="/trackpad-wizard-icon.png"
+                width="1024"
+                height="1024"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
             </picture>
             <div>
               <p className="eyebrow">Trackpad Wizard / Public release</p>

@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository: 2026-09-03
+Last verified against the repository and production deployment: 2026-09-04
 
 This document describes the website as it currently exists. It is not the
 design constitution or a changelog. Rewrite stale statements when meaningful
@@ -11,15 +11,18 @@ implementation, design, routing, browser, or deployment decisions change.
 
 - **Project status:** The collection now contains two independent app chapters.
   LinkScope retains its device-led inspector; Trackpad Wizard adds a separate,
-  screenshot-led tactile chapter with a verified public download.
+  screenshot-led tactile chapter with a verified public download. Cloudflare
+  Workers now serves the canonical production origin. The no-index beta Worker
+  remains available at `https://apps.beta.jasonstu.cc`. The former ChatGPT Sites
+  project is owner-only and no longer part of the source or deployment path.
 - **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
-  social metadata use this origin. The Cloudflare DNS connection, Sites custom
-  hostname, and TLS certificate are active.
+  social metadata use this origin. The beta hostname is explicitly excluded
+  from search indexing.
 - **Implemented routes:** `/`; `/trackpad-wizard`, `/trackpad-wizard/privacy`,
   `/trackpad-wizard/support`; and `/linkscope`, `/linkscope/privacy`,
   `/linkscope/support`. Unknown routes return a real `404` document.
-- **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, and a Cloudflare
-  Worker-compatible Sites runtime. npm is the package manager.
+- **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, and Cloudflare Workers
+  Static Assets. npm is the package manager.
 - **Rendering and routing:** App Router-shaped server rendering through vinext.
   Every public route returns meaningful HTML directly. Ordinary navigation uses
   native anchors; no client router or application-specific client JavaScript is
@@ -44,10 +47,15 @@ implementation, design, routing, browser, or deployment decisions change.
   repository captures document Light appearance; the page preserves that state
   rather than fabricating Dark screenshots. LinkScope Lite remains in development
   testing without a verified public destination. Both privacy pages are
-  source-grounded implementation notes, not final distribution policies.
+  source-grounded implementation notes, not final distribution policies. The
+  production Worker has comparative lab measurements and operational telemetry,
+  but not yet enough real-user traffic for field Core Web Vitals conclusions.
 - **Next recommended work:** Run the physical browser and VoiceOver matrix,
-  replace Trackpad Wizard captures when its interface changes materially, and add
-  a LinkScope download only when its signed public release destination is verified.
+  observe production request/error/latency behavior, and retain the beta
+  rollback path until the production observation period is complete.
+  Replace Trackpad Wizard captures when its interface changes materially, and
+  add a LinkScope download only when its signed public release destination is
+  verified.
 
 ## Authority and update rule
 
@@ -82,10 +90,17 @@ inherit LinkScope's application-window reconstruction.
 
 - `app/` contains route documents, metadata, the shared header, and global CSS.
 - vinext provides the App Router-compatible server renderer; Vite builds the
-  Worker and browser assets; `worker/index.ts` delegates requests to the vinext
-  handler without an unused image or data service.
-- The Sites Vite plugin produces the hosting artifact. The project has no D1,
-  R2, authentication, analytics, persistence, or third-party script.
+  Worker and browser assets. `worker/index.ts` delegates requests to the vinext
+  handler and adds passive security, cache, and beta-indexing headers without an
+  unused image or data service.
+- The Cloudflare Vite plugin and `@vinext/cloudflare` CDN adapter produce the
+  Workers deployment. The former Sites Vite plugin and `.openai/hosting.json`
+  have been removed so the repository has a single hosting path. The project has
+  no D1, R2, authentication, browser analytics, application persistence, or
+  third-party script.
+- Pages are declared static with a one-hour revalidation interval. The CDN
+  adapter stores rendered responses at the edge while direct requests still run
+  through the Worker entry point for routing and response policy.
 - React is used as server-rendered authoring syntax. The LinkScope device
   inspector uses native radio markup plus CSS rather than a hydrated client
   component. Its responsive composition transforms from a desktop sidebar/detail
@@ -191,6 +206,7 @@ ratios. Safe-area-aware gutters and touch sizing are part of the base CSS.
 | CSS `:has()` | Shows the selected Summary, Raw Parameters, or History view | `@supports selector(:has(*))` | All device-detail panels remain in document flow |
 | `content-visibility: auto` | Avoids unnecessary below-fold rendering | `@supports (content-visibility: auto)` | Normal eager CSS rendering |
 | Cross-document View Transitions | Subtle continuity for native navigation | `@supports (view-transition-name: none)` and motion preference | Immediate normal document navigation |
+| Native lazy loading and asynchronous image decoding | Defers non-critical product and footer imagery | Browser-native attributes | Normal image fetch and decode |
 
 No essential content, state explanation, control, focus order, or route depends
 on these capabilities. There are no user-agent branches or browser-specific
@@ -199,17 +215,34 @@ code paths at launch.
 ## Performance architecture
 
 The application ships no custom product-interaction bundle, remote font,
-analytics, or third-party runtime. LinkScope's mark is a compact local SVG.
-Trackpad Wizard uses a lossless WebP icon and a 96 KB WebP Overview presentation
-copy, while keeping authored PNG/JPEG fallbacks. Social assets are local and are
-not requested during ordinary collection rendering. Below-fold sections opt into
-deferred rendering where supported.
+browser analytics, or third-party runtime. LinkScope's mark is a compact local
+SVG. The collection index uses a purpose-sized 4.2 KB Trackpad Wizard WebP instead
+of transferring its 271 KB full-resolution presentation asset into a 48–64 px
+slot. Product art retains the full-resolution source, authored PNG/JPEG
+fallbacks, and a 96 KB WebP Overview presentation copy. Social assets are local
+and are not requested during ordinary collection rendering. Below-fold sections
+and non-critical images opt into deferred work where supported.
+
+Cloudflare applies tiered caching rather than one blanket lifetime. Hashed
+browser assets are immutable for one year; named media revalidates after one day
+and may serve stale for seven days; HTML always revalidates in the browser but is
+edge-cacheable for one hour with stale-while-revalidate. Static Assets and
+rendered HTML have both been observed returning `CF-Cache-Status: HIT` after
+warming.
+
+A matched Lighthouse 13.4.1 mobile lab run on 2026-09-04 scored the Cloudflare
+cutover artifact 100 versus 87 for the former ChatGPT Sites host. Cloudflare
+FCP/LCP/Speed Index/
+TBT/TTI were 1.23 s / 1.53 s / 2.29 s / 0 ms / 1.53 s, versus 2.53 s / 2.64 s /
+5.16 s / 168.5 ms / 4.21 s. Both had zero CLS; transferred bytes fell from
+419,723 to 148,198. These are comparative lab results from one machine, not
+field Core Web Vitals or a latency guarantee.
 
 The current vinext navigation/hydration runtime transfers about 111 KB gzipped
 before product interaction, roughly 31 KB above the constitution's initial
 80 KB JavaScript aim. This is an explicit launch exception for the supported
-Sites server-rendering/runtime path, not permission to add application script.
-Recheck vinext releases and a Sites-supported zero-hydration path; remove this
+vinext server-rendering/runtime path, not permission to add application script.
+Recheck vinext releases and a supported zero-hydration path; remove this
 exception when the same real-route and hosting behavior can ship more lightly.
 
 Keep this shape until evidence requires more: prefer HTML/CSS and native browser
@@ -225,7 +258,9 @@ runtime, maintenance, and privacy cost.
   selection uses them only in the footer, without client-side appearance logic.
 - `public/favicon.svg` is a compact mark treatment.
 - `public/trackpad-wizard-icon.png` is a copy of the current production icon;
-  `public/trackpad-wizard-icon.webp` is its lossless presentation copy.
+  `public/trackpad-wizard-icon.webp` is its full-resolution presentation copy,
+  and `public/trackpad-wizard-icon-256.webp` is the compact collection-index
+  derivative.
 - `public/trackpad-wizard-overview.png` and
   `public/trackpad-wizard-gesture.jpg` are real repository captures from
   2026-08-30. `public/trackpad-wizard-overview.webp` is an efficient in-page
@@ -248,19 +283,47 @@ runtime, maintenance, and privacy cost.
 
 ## Deployment
 
-ChatGPT Sites is the selected production runtime and host. The Sites project is
-`appgprj_6a8687dcb59881918e9895b01b15b506` with slug `jasonstu-apps`; the
-production site is public. `.openai/hosting.json` records the
-opaque project ID and confirms that D1 and R2 are unused. The custom hostname
-`apps.jasonstu.cc` is active through a DNS-only Cloudflare CNAME; Sites reports
-both the hostname and TLS certificate active. Only the exact hostname is bound;
-there is no wildcard or other `jasonstu.cc` custom hostname attached to this
-Site.
+Cloudflare Workers is the selected production runtime. The `jasonstu-apps`
+Worker serves native Static Assets at `https://apps.jasonstu.cc`; Cloudflare
+manages its proxied DNS record and certificate. The automatically assigned
+`workers.dev` address is an operational fallback. `wrangler.jsonc` owns the
+production Worker name, asset binding, custom domain, cache, compatibility date,
+and observability settings. Its named `beta` environment preserves the existing
+`jasonstu-apps-beta` Worker and `https://apps.beta.jasonstu.cc` route as a
+no-index rollback target.
+
+The former ChatGPT Sites project is no longer bound to the canonical hostname
+and has owner-only access. Anonymous requests to its generated address return
+`401`; no production traffic is routed there. Sites-specific source wiring and
+the project manifest have been removed from this repository.
+
+The public GitHub repository is the canonical source. Cloudflare Workers Builds
+watches its `main` branch and publishes successful production builds to the
+existing `jasonstu-apps` Worker. Local Wrangler deployment remains the recovery
+path if hosted builds are unavailable.
+
+All seven public routes pass direct-load and repeat-load checks after cutover,
+the unmatched route returns `404`, and crawler resources retain their expected
+content types. `robots.txt`, every sitemap entry, canonical metadata, and social
+metadata resolve to `https://apps.jasonstu.cc` with no beta or Sites hostname in
+the public document URLs.
+
+Cloudflare dashboard metrics plus persisted invocation logs and traces are
+enabled at a full sampling rate for the initial production observation period. This is operational
+server-side telemetry, not a browser beacon; the site still loads no analytics
+script, and query strings are redacted from stored telemetry. Revisit sampling
+after initial production traffic establishes an appropriate rate. The beta sends
+`X-Robots-Tag: noindex, nofollow, noarchive` while retaining production canonical
+URLs, so it does not compete with the official host in search results.
 
 ## Significant decisions and rejected returns
 
 - Keep native multi-document navigation; do not introduce a client router to
   simulate routes that the host can serve directly.
+- Use Workers Static Assets for production rather than creating a second Pages
+  architecture. It preserves the existing vinext server-rendering path and
+  supports explicit edge caching and observability. Keep the named beta Worker
+  as the bounded rollback path.
 - Keep the CSS-only, device-led inspector while it communicates the product
   accurately; do not restore a provider-first selector or hydrate it for cosmetic
   state management.
@@ -268,8 +331,8 @@ Site.
   the product; do not build a decorative browser simulation of touch or haptics.
 - Publish Trackpad Wizard's direct download only while the matching notarized DMG
   and checksum remain verifiable at the declared release URL.
-- Do not add Tailwind, a component library, a CMS, D1/R2, analytics, or an image
-  pipeline without a demonstrated requirement.
+- Do not add Tailwind, a component library, a CMS, D1/R2, browser analytics, or
+  an image pipeline without a demonstrated requirement.
 - Do not turn the collection into an equal grid of generic cards or future app
   pages into LinkScope reskins.
 - Do not publish a download, version, price, privacy promise, or capability that
@@ -288,14 +351,20 @@ Site.
   status and artwork, or do their availability differences still favor local data?
 - Physical Safari/WebKit, Firefox, high-zoom, VoiceOver, and energy-use checks
   remain required before treating the first implementation as fully hardened.
+- When should the beta Worker be retired after production has demonstrated
+  stable real-user behavior?
+- Reconsider the initial 100% log and trace sampling rate after real request
+  volume and retention cost are known.
 
 ## Next actions
 
-1. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
+1. Observe production Worker request/error/latency metrics and traces in the
+   Cloudflare dashboard; reduce sampling after the initial observation period.
+2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
    reduced-motion checks; record only actionable differences.
-2. Reconcile LinkScope release metadata and add a download only after its signed
+3. Reconcile LinkScope release metadata and add a download only after its signed
    distribution path is public and verified.
-3. Replace Trackpad Wizard captures after material interface changes and record
+4. Replace Trackpad Wizard captures after material interface changes and record
    both Light and Dark evidence when the app supplies both.
-4. Update either privacy document when its app's storage, permission, network,
+5. Update either privacy document when its app's storage, permission, network,
    or distribution behavior changes.

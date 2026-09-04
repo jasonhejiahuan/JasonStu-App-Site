@@ -25,7 +25,14 @@ export function JasonStuSignature() {
     <span className="footer-signature" aria-label="JasonStu Apps">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcSet="/jasonstu-logo-dark.png" />
-        <img src="/jasonstu-logo.svg" width="3071" height="1045" alt="" />
+        <img
+          src="/jasonstu-logo.svg"
+          width="3071"
+          height="1045"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
       </picture>
       <span>Apps</span>
     </span>

@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
+import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-async function render(pathname) {
+async function render(pathname, environment = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
   const { default: worker } = await import(workerUrl.href);
@@ -14,6 +15,7 @@ async function render(pathname) {
       ASSETS: {
         fetch: async () => new Response("Not found", { status: 404 }),
       },
+      ...environment,
     },
     {
       waitUntil() {},
@@ -55,6 +57,7 @@ for (const [pathname, expected, canonical] of routeCases) {
 
     if (pathname === "/") {
       assert.match(html, /href="\/trackpad-wizard"/);
+      assert.match(html, /trackpad-wizard-icon-256\.webp/);
       assert.match(html, /macOS 26\+ \/ Public release/);
       assert.match(html, /href="\/linkscope"/);
     }
@@ -108,6 +111,46 @@ test("returns a real not-found response", async () => {
   const html = await response.text();
   assert.match(html, /outside the collection/i);
   assert.match(html, /<meta name="robots" content="noindex"/i);
+});
+
+test("applies passive security headers without adding client analytics", async () => {
+  const response = await render("/");
+  assert.equal(
+    response.headers.get("content-security-policy"),
+    "base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+  );
+  assert.equal(response.headers.get("permissions-policy"), "camera=(), geolocation=(), microphone=(), payment=(), usb=()");
+  assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("cache-control"), "public, max-age=0, must-revalidate");
+  assert.match(response.headers.get("cdn-cache-control") ?? "", /max-age=3600/);
+  const html = await response.text();
+  assert.doesNotMatch(html, /cloudflareinsights|beacon\.min\.js/i);
+});
+
+test("keeps the retained beta environment out of search indexes", async () => {
+  const response = await render("/trackpad-wizard", { DEPLOYMENT_ENV: "beta" });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow, noarchive");
+  const html = await response.text();
+  assert.match(html, /<link rel="canonical" href="https:\/\/apps\.jasonstu\.cc\/trackpad-wizard"/);
+
+  const robots = await render("/robots.txt", { DEPLOYMENT_ENV: "beta" });
+  assert.equal(robots.headers.get("x-robots-tag"), "noindex, nofollow, noarchive");
+});
+
+test("ships tiered browser-cache rules with the static assets", async () => {
+  const headers = await readFile(new URL("../dist/client/_headers", import.meta.url), "utf8");
+  assert.match(headers, /\/_next\/static\/\*/);
+  assert.match(headers, /max-age=31536000, immutable/);
+  assert.match(headers, /max-age=86400, stale-while-revalidate=604800/);
+  assert.match(headers, /X-Content-Type-Options: nosniff/);
+});
+
+test("uses a compact Trackpad Wizard icon for the collection index", async () => {
+  const icon = await stat(new URL("../dist/client/trackpad-wizard-icon-256.webp", import.meta.url));
+  assert.ok(icon.size < 10_000, `expected compact icon, received ${icon.size} bytes`);
 });
 
 test("allows crawlers and advertises the canonical sitemap", async () => {
