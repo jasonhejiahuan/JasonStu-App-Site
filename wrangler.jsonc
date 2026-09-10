@@ -15,6 +15,9 @@
   "vars": {
     "DEPLOYMENT_ENV": "production"
   },
+  "ai": {
+    "binding": "AI"
+  },
   "assets": {
     "directory": "./dist/client",
     "binding": "ASSETS",
@@ -49,6 +52,9 @@
       ],
       "vars": {
         "DEPLOYMENT_ENV": "beta"
+      },
+      "ai": {
+        "binding": "AI"
       }
     }
   }

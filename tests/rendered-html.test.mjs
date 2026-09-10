@@ -2,14 +2,15 @@ import assert from "node:assert/strict";
 import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-async function render(pathname, environment = {}) {
+async function render(pathname, environment = {}, request = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
     new Request(`http://localhost${pathname}`, {
-      headers: { accept: "text/html" },
+      method: request.method ?? "GET",
+      headers: { accept: "text/html", ...request.headers },
     }),
     {
       ASSETS: {
@@ -125,8 +126,106 @@ test("applies passive security headers without adding client analytics", async (
   assert.equal(response.headers.get("x-frame-options"), "DENY");
   assert.equal(response.headers.get("cache-control"), "public, max-age=0, must-revalidate");
   assert.match(response.headers.get("cdn-cache-control") ?? "", /max-age=3600/);
+  assert.match(response.headers.get("vary") ?? "", /(?:^|,\s*)Accept(?:,|$)/i);
   const html = await response.text();
   assert.doesNotMatch(html, /cloudflareinsights|beacon\.min\.js/i);
+});
+
+test("negotiates a clean Markdown representation for agents", async () => {
+  const calls = [];
+  const response = await render(
+    "/linkscope/privacy",
+    {
+      AI: {
+        async toMarkdown(document, options) {
+          calls.push({ document, options });
+          return {
+            id: "conversion-test",
+            name: document.name,
+            mimeType: "text/html",
+            format: "markdown",
+            tokens: 37,
+            data: "# LinkScope Privacy\n\nLinkScope keeps inspection local.\n",
+          };
+        },
+      },
+    },
+    { headers: { accept: "text/markdown" } },
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/markdown\b/i);
+  assert.match(response.headers.get("vary") ?? "", /(?:^|,\s*)Accept(?:,|$)/i);
+  assert.equal(response.headers.get("content-signal"), "search=yes, ai-input=yes, ai-train=yes");
+  assert.equal(response.headers.get("x-markdown-tokens"), "37");
+  assert.match(response.headers.get("x-original-tokens") ?? "", /^\d+$/);
+  assert.equal(
+    response.headers.get("x-robots-tag"),
+    "max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+  );
+  assert.equal(await response.text(), "# LinkScope Privacy\n\nLinkScope keeps inspection local.\n");
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].document.name, "linkscope-privacy.html");
+  assert.equal(calls[0].document.blob.type, "text/html");
+  assert.match(await calls[0].document.blob.text(), /<main[^>]+id="main-content"/i);
+  assert.deepEqual(calls[0].options.conversionOptions.html, {
+    cssSelector: "main",
+    hostname: "http://localhost",
+  });
+});
+
+test("keeps HTML as the default and respects a rejected Markdown media range", async () => {
+  const unavailableAi = {
+    async toMarkdown() {
+      throw new Error("Markdown conversion must not run");
+    },
+  };
+  const defaultResponse = await render("/", { AI: unavailableAi });
+  const rejectedResponse = await render(
+    "/",
+    { AI: unavailableAi },
+    { headers: { accept: "text/markdown;q=0, text/html" } },
+  );
+
+  assert.match(defaultResponse.headers.get("content-type") ?? "", /^text\/html\b/i);
+  assert.match(rejectedResponse.headers.get("content-type") ?? "", /^text\/html\b/i);
+});
+
+test("falls back to complete HTML when Markdown conversion is unavailable", async () => {
+  const response = await render(
+    "/trackpad-wizard/support",
+    {
+      AI: {
+        async toMarkdown() {
+          throw new Error("Temporary conversion failure");
+        },
+      },
+    },
+    { headers: { accept: "text/markdown" } },
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+  assert.match(await response.text(), /Support starts with what happened/);
+});
+
+test("negotiates Markdown metadata for HEAD without invoking conversion", async () => {
+  const response = await render(
+    "/",
+    {
+      AI: {
+        async toMarkdown() {
+          throw new Error("HEAD must not invoke conversion");
+        },
+      },
+    },
+    { method: "HEAD", headers: { accept: "text/markdown" } },
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/markdown\b/i);
+  assert.equal(await response.text(), "");
 });
 
 test("keeps the retained beta environment out of search indexes", async () => {
@@ -138,6 +237,27 @@ test("keeps the retained beta environment out of search indexes", async () => {
 
   const robots = await render("/robots.txt", { DEPLOYMENT_ENV: "beta" });
   assert.equal(robots.headers.get("x-robots-tag"), "noindex, nofollow, noarchive");
+
+  const markdown = await render(
+    "/linkscope",
+    {
+      DEPLOYMENT_ENV: "beta",
+      AI: {
+        async toMarkdown(document) {
+          return {
+            id: "conversion-beta-test",
+            name: document.name,
+            mimeType: "text/html",
+            format: "markdown",
+            tokens: 3,
+            data: "# LinkScope\n",
+          };
+        },
+      },
+    },
+    { headers: { accept: "text/markdown" } },
+  );
+  assert.equal(markdown.headers.get("x-robots-tag"), "noindex, nofollow, noarchive");
 });
 
 test("ships tiered browser-cache rules with the static assets", async () => {

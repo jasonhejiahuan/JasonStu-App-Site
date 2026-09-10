@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository and production deployment: 2026-09-04
+Last verified against the repository and production deployment: 2026-09-10
 
 This document describes the website as it currently exists. It is not the
 design constitution or a changelog. Rewrite stale statements when meaningful
@@ -21,8 +21,8 @@ implementation, design, routing, browser, or deployment decisions change.
 - **Implemented routes:** `/`; `/trackpad-wizard`, `/trackpad-wizard/privacy`,
   `/trackpad-wizard/support`; and `/linkscope`, `/linkscope/privacy`,
   `/linkscope/support`. Unknown routes return a real `404` document.
-- **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, and Cloudflare Workers
-  Static Assets. npm is the package manager.
+- **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, Cloudflare Workers
+  Static Assets, and Workers AI Markdown Conversion. npm is the package manager.
 - **Rendering and routing:** App Router-shaped server rendering through vinext.
   Every public route returns meaningful HTML directly. Ordinary navigation uses
   native anchors; no client router or application-specific client JavaScript is
@@ -91,8 +91,9 @@ inherit LinkScope's application-window reconstruction.
 - `app/` contains route documents, metadata, the shared header, and global CSS.
 - vinext provides the App Router-compatible server renderer; Vite builds the
   Worker and browser assets. `worker/index.ts` delegates requests to the vinext
-  handler and adds passive security, cache, and beta-indexing headers without an
-  unused image or data service.
+  handler and adds passive security, cache, beta-indexing, crawler-policy, and
+  Markdown content-negotiation behavior. A Workers AI binding converts only
+  successful HTML page responses explicitly requested as `text/markdown`.
 - The Cloudflare Vite plugin and `@vinext/cloudflare` CDN adapter produce the
   Workers deployment. The former Sites Vite plugin and `.openai/hosting.json`
   have been removed so the repository has a single hosting path. The project has
@@ -207,6 +208,7 @@ ratios. Safe-area-aware gutters and touch sizing are part of the base CSS.
 | `content-visibility: auto` | Avoids unnecessary below-fold rendering | `@supports (content-visibility: auto)` | Normal eager CSS rendering |
 | Cross-document View Transitions | Subtle continuity for native navigation | `@supports (view-transition-name: none)` and motion preference | Immediate normal document navigation |
 | Native lazy loading and asynchronous image decoding | Defers non-critical product and footer imagery | Browser-native attributes | Normal image fetch and decode |
+| Markdown content negotiation | Gives agents a clean main-content representation without HTML chrome | Explicit `Accept: text/markdown` media range | Complete HTML response if conversion is unavailable |
 
 No essential content, state explanation, control, focus order, or route depends
 on these capabilities. There are no user-agent branches or browser-specific
@@ -229,6 +231,14 @@ and may serve stale for seven days; HTML always revalidates in the browser but i
 edge-cacheable for one hour with stale-while-revalidate. Static Assets and
 rendered HTML have both been observed returning `CF-Cache-Status: HIT` after
 warming.
+
+Agent-requested Markdown is converted from the same server-rendered source with
+Workers AI `toMarkdown()`, scoped to `<main>`, and cached under a representation-
+specific key so it cannot collide with HTML. Responses declare `Vary: Accept`,
+token estimates, and the same Search, AI Input, and AI Training permissions as
+`robots.txt`. Ordinary browser requests never enter the conversion path. A
+conversion error returns the complete HTML document rather than failing the
+route; this fallback is intentionally visible through its HTML content type.
 
 A matched Lighthouse 13.4.1 mobile lab run on 2026-09-04 scored the Cloudflare
 cutover artifact 100 versus 87 for the former ChatGPT Sites host. Cloudflare
@@ -290,9 +300,10 @@ Worker serves native Static Assets at `https://apps.jasonstu.cc`; Cloudflare
 manages its proxied DNS record and certificate. The automatically assigned
 `workers.dev` address is an operational fallback. `wrangler.jsonc` owns the
 production Worker name, asset binding, custom domain, cache, compatibility date,
-and observability settings. Its named `beta` environment preserves the existing
-`jasonstu-apps-beta` Worker and `https://apps.beta.jasonstu.cc` route as a
-no-index rollback target.
+observability settings, and Workers AI binding. Its named `beta` environment
+preserves the existing `jasonstu-apps-beta` Worker and
+`https://apps.beta.jasonstu.cc` route as a no-index rollback target, with the
+same binding so Markdown can be verified before production release.
 
 The former ChatGPT Sites project is no longer bound to the canonical hostname
 and has owner-only access. Anonymous requests to its generated address return
