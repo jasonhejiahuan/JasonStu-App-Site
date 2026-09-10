@@ -4,6 +4,12 @@ import handler from "vinext/server/app-router-entry";
 const ROBOTS_PREVIEW_POLICY =
   "max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 const BETA_ROBOTS_POLICY = "noindex, nofollow, noarchive";
+const ROBOTS_TEXT = `User-Agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
+
+Sitemap: https://apps.jasonstu.cc/sitemap.xml
+`;
 
 const SECURITY_HEADERS = {
   "Content-Security-Policy": "base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
@@ -19,7 +25,15 @@ const worker = {
     env: CloudflareEnv,
     ctx: ExecutionContext,
   ): Promise<Response> {
-    const response = await handler.fetch(request, env, ctx);
+    const url = new URL(request.url);
+    const servesRobots =
+      url.pathname === "/robots.txt" &&
+      (request.method === "GET" || request.method === "HEAD");
+    const response = servesRobots
+      ? new Response(request.method === "HEAD" ? null : ROBOTS_TEXT, {
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+        })
+      : await handler.fetch(request, env, ctx);
     const headers = new Headers(response.headers);
 
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) {

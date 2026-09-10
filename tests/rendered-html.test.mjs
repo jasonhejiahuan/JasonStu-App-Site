@@ -153,13 +153,17 @@ test("uses a compact Trackpad Wizard icon for the collection index", async () =>
   assert.ok(icon.size < 10_000, `expected compact icon, received ${icon.size} bytes`);
 });
 
-test("allows crawlers and advertises the canonical sitemap", async () => {
+test("allows search, AI input, and AI training and advertises the canonical sitemap", async () => {
   const response = await render("/robots.txt");
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/plain\b/i);
   assert.equal(response.headers.get("x-robots-tag"), null);
   const body = await response.text();
   assert.match(body, /User-Agent: \*/i);
+  assert.match(
+    body,
+    /Content-Signal: search=yes, ai-input=yes, ai-train=yes/i,
+  );
   assert.match(body, /Allow: \//i);
   assert.doesNotMatch(body, /Disallow:/i);
   assert.match(body, /Sitemap: https:\/\/apps\.jasonstu\.cc\/sitemap\.xml/i);

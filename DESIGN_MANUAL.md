@@ -271,9 +271,11 @@ runtime, maintenance, and privacy cost.
 - Route metadata resolves against `https://apps.jasonstu.cc`. Each product page
   owns its social image; privacy and support routes clear inherited images and
   use summary metadata.
-- `/robots.txt` permits all user agents to crawl this host and points to the
-  canonical `/sitemap.xml`. The sitemap contains only canonical
-  `apps.jasonstu.cc` routes.
+- `/robots.txt` permits all user agents to crawl this host, explicitly grants
+  Cloudflare Content Signals uses for Search, AI Input, and AI Training, and
+  points to the canonical `/sitemap.xml`. The Worker authors the plain-text
+  response so the nonstandard `Content-Signal` directive remains exact. The
+  sitemap contains only canonical `apps.jasonstu.cc` routes.
 - HTML responses explicitly permit unrestricted search-result previews through
   `X-Robots-Tag: max-snippet:-1, max-image-preview:large, max-video-preview:-1`.
   This preview policy does not override the framework-authored `noindex` on real
