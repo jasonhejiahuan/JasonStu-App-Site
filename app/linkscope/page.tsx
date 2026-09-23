@@ -73,7 +73,7 @@ export default function LinkScopePage() {
           </div>
 
           <div className="linkscope-intro">
-            <p className="eyebrow">Native macOS utility / In active development</p>
+            <p className="eyebrow">Native macOS utility / LinkScope Lite coming soon</p>
             <h1 id="linkscope-title">Inspect the wireless state macOS actually exposes.</h1>
             <p className="lede">
               LinkScope consolidates read-only observations from public system
@@ -82,6 +82,9 @@ export default function LinkScopePage() {
             </p>
             <div className="opening-actions" aria-label="LinkScope actions">
               <a className="primary-link" href="#inspector">Explore the inspector</a>
+              <a href="https://apps.apple.com/us/app/linkscope-lite/id6802596955">
+                Coming soon on the Mac App Store. <span aria-hidden="true">↗</span>
+              </a>
               <a href="https://github.com/jasonhejiahuan/LinkScope">
                 View source <span aria-hidden="true">↗</span>
               </a>
@@ -172,17 +175,17 @@ export default function LinkScopePage() {
 
         <section className="practical-chapter" aria-labelledby="practical-title">
           <div className="chapter-intro">
-            <p className="eyebrow">04 / Current build</p>
+            <p className="eyebrow">04 / App details</p>
             <h2 id="practical-title">A quiet utility with a deeper inspector.</h2>
             <p>
-              The current development source includes a menu-bar surface, searchable
+              The current source includes a menu-bar surface, searchable
               device list, provider status, raw parameters, timeline, snapshots,
               complete JSON import/export, monitoring rules, and Shortcuts actions.
             </p>
           </div>
 
           <table className="edition-table">
-            <caption>Current development editions</caption>
+            <caption>LinkScope editions</caption>
             <thead>
               <tr><th>Edition</th><th>Distribution target</th><th>Provider boundary</th></tr>
             </thead>
@@ -193,10 +196,10 @@ export default function LinkScopePage() {
           </table>
 
           <dl className="practical-facts">
-            <div><dt>Platform</dt><dd>macOS 15 or newer in the current development requirements</dd></div>
+            <div><dt>Platform</dt><dd>macOS 15 or newer</dd></div>
             <div><dt>Languages</dt><dd>English and Simplified Chinese</dd></div>
             <div><dt>Local history</dt><dd>Encrypted sensitive payloads; unlimited retention by default</dd></div>
-            <div><dt>Availability</dt><dd>Development testing is underway. The App Store release and public download are coming soon.</dd></div>
+            <div><dt>Availability</dt><dd>LinkScope Lite is coming soon on the Mac App Store. Download availability has not been confirmed.</dd></div>
           </dl>
         </section>
 
@@ -210,7 +213,7 @@ export default function LinkScopePage() {
             decoding="async"
           />
           <div>
-            <p className="eyebrow">LinkScope / Active development</p>
+            <p className="eyebrow">LinkScope / Lite coming soon</p>
             <h2 id="close-title">Follow the evidence, including the gaps.</h2>
             <div className="closing-links">
               <a className="primary-link" href="https://github.com/jasonhejiahuan/LinkScope">Browse the source ↗</a>

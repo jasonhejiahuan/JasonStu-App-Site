@@ -31,8 +31,8 @@ export default function SupportPage() {
           <p className="eyebrow">LinkScope / Support</p>
           <h1>Support begins with reproducible evidence.</h1>
           <p>
-            LinkScope is in active development. The public source repository and
-            its issue tracker are the current support channel.
+            LinkScope Lite is coming soon on the Mac App Store. The public source
+            repository and its issue tracker are the current support channel.
           </p>
         </header>
 
@@ -53,21 +53,20 @@ export default function SupportPage() {
         </section>
 
         <section aria-labelledby="requirements-title">
-          <h2 id="requirements-title">Current development requirements</h2>
+          <h2 id="requirements-title">App information</h2>
           <dl className="document-facts">
             <div><dt>Platform</dt><dd>macOS 15 or newer</dd></div>
             <div><dt>Editions</dt><dd>LinkScope and LinkScope Lite</dd></div>
             <div><dt>Interface languages</dt><dd>English and Simplified Chinese</dd></div>
-            <div><dt>Public release</dt><dd>No verified download is advertised by this site yet</dd></div>
+            <div><dt>Availability</dt><dd>LinkScope Lite is coming soon on the Mac App Store; download availability has not been confirmed</dd></div>
           </dl>
         </section>
 
         <nav className="document-nav" aria-label="LinkScope documents">
           <a href="/linkscope">Return to LinkScope</a>
-          <a href="/linkscope/privacy">Read privacy notes</a>
+          <a href="/linkscope/privacy">Read privacy policy</a>
         </nav>
       </main>
     </>
   );
 }
-

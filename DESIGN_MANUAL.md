@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository and production deployment: 2026-09-10
+Last verified against the repository: 2026-09-23
 
 This document describes the website as it currently exists. It is not the
 design constitution or a changelog. Rewrite stale statements when meaningful
@@ -45,17 +45,17 @@ implementation, design, routing, browser, or deployment decisions change.
 - **Known limitations:** The current source has not yet had physical Safari,
   Firefox, 200% zoom, or assistive-technology QA. Trackpad Wizard's current
   repository captures document Light appearance; the page preserves that state
-  rather than fabricating Dark screenshots. LinkScope Lite remains in development
-  testing without a verified public destination. Both privacy pages are
-  source-grounded implementation notes, not final distribution policies. The
-  production Worker has comparative lab measurements and operational telemetry,
+  rather than fabricating Dark screenshots. LinkScope Lite has a supplied Mac
+  App Store listing URL, but its listing contents and download availability have
+  not been verified. The LinkScope Lite privacy page is a distribution policy
+  grounded in the 2.0.1 source; Trackpad Wizard privacy remains implementation
+  notes. The production Worker has comparative lab measurements and operational telemetry,
   but not yet enough real-user traffic for field Core Web Vitals conclusions.
 - **Next recommended work:** Run the physical browser and VoiceOver matrix,
   observe production request/error/latency behavior, and retain the beta
   rollback path until the production observation period is complete.
   Replace Trackpad Wizard captures when its interface changes materially, and
-  add a LinkScope download only when its signed public release destination is
-  verified.
+  advertise a LinkScope download only when its public availability is verified.
 
 ## Authority and update rule
 
@@ -77,7 +77,7 @@ constitution to match it.
 | `/trackpad-wizard/privacy` | Current implementation privacy notes | Server-rendered document |
 | `/trackpad-wizard/support` | Current support path and issue-reporting guidance | Server-rendered document |
 | `/linkscope` | LinkScope product chapter and explanatory inspector | Server-rendered document |
-| `/linkscope/privacy` | Current implementation privacy notes | Server-rendered document |
+| `/linkscope/privacy` | LinkScope Lite 2.0.1 privacy policy | Server-rendered document |
 | `/linkscope/support` | Current support path and issue-reporting guidance | Server-rendered document |
 | unmatched route | Collection-aware not-found page | Real HTTP `404` |
 
@@ -145,8 +145,10 @@ the product demonstration; it is not a reusable card or site-wide decoration.
 
 The page rhythm moves from a quiet icon-led opening to a dense provider
 inspector, a high-contrast availability chapter, a measured diagnostic trace,
-and practical development facts. It deliberately omits pricing, testimonials,
+and practical app facts. It deliberately omits pricing, testimonials,
 conversion claims, fabricated screenshots, and an unverified download action.
+The supplied Apple listing link is explicitly labelled coming soon; it is not
+presented as a working download.
 
 Trackpad Wizard's thesis is “follow the physical surface from contact to
 response.” Its silver production icon, ultraviolet-violet active-state accent,

@@ -31,7 +31,7 @@ const routeCases = [
   ["/trackpad-wizard/privacy", /Experiments stay on your Mac/, "https://apps.jasonstu.cc/trackpad-wizard/privacy"],
   ["/trackpad-wizard/support", /Support starts with what happened/, "https://apps.jasonstu.cc/trackpad-wizard/support"],
   ["/linkscope", /Inspect the wireless state macOS actually exposes/, "https://apps.jasonstu.cc/linkscope"],
-  ["/linkscope/privacy", /keeps inspection local/, "https://apps.jasonstu.cc/linkscope/privacy"],
+  ["/linkscope/privacy", /LinkScope Lite Privacy Policy/, "https://apps.jasonstu.cc/linkscope/privacy"],
   ["/linkscope/support", /Support begins with reproducible evidence/, "https://apps.jasonstu.cc/linkscope/support"],
 ];
 
@@ -61,6 +61,7 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /trackpad-wizard-icon-256\.webp/);
       assert.match(html, /macOS 26\+ \/ Public release/);
       assert.match(html, /href="\/linkscope"/);
+      assert.match(html, /LinkScope Lite coming soon to the Mac App Store/);
     }
 
     if (pathname === "/trackpad-wizard") {
@@ -90,10 +91,20 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /History/);
       assert.match(html, /Each value keeps its source and availability/);
       assert.match(html, /Evidence changes without losing provenance/);
-      assert.match(html, /Development testing is underway/);
+      assert.match(html, /Coming soon on the Mac App Store\./);
+      assert.match(html, /href="https:\/\/apps\.apple\.com\/us\/app\/linkscope-lite\/id6802596955"/);
+      assert.match(html, /Download availability has not been confirmed/);
       assert.match(html, /public\.corehid/);
       assert.match(html, /public\.iobluetooth/);
       assert.doesNotMatch(html, /Select a public provider lens/);
+    }
+
+    if (pathname === "/linkscope/privacy") {
+      assert.match(html, /AES-256-GCM/);
+      assert.match(html, /not encrypted by LinkScope/);
+      assert.match(html, /30, 90, or 365 days/);
+      assert.match(html, /older observation records only/);
+      assert.match(html, /required for Bluetooth accessory inspection/);
     }
 
     if (pathname.endsWith("/privacy") || pathname.endsWith("/support")) {

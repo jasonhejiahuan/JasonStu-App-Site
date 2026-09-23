@@ -25,11 +25,10 @@ accessory.
 
 The current source contains Full and Lite editions, English and Simplified
 Chinese UI, and encrypted local persistence for sensitive payloads. LinkScope
-Lite is currently in development testing, but no public App Store or durable
-direct-download destination has been verified. The website therefore describes
-testing as underway and the public release as forthcoming; it does not invent
-pricing, a release date, or a download link. Repository version references
-currently conflict, so the page does not publish a version number.
+Lite has a supplied Mac App Store URL, but public availability is unconfirmed.
+The website labels the link as coming soon and does not present it as a working
+download. It does not invent pricing or a release date. The product page does
+not publish a version number.
 
 ## Required brief
 

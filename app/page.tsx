@@ -45,7 +45,7 @@ export default function Home() {
             <img src="/linkscope-mark.svg" width="465" height="432" alt="" />
             <span className="product-row-identity">
               <span className="product-row-name">LinkScope</span>
-              <small>macOS / Active development</small>
+              <small>macOS / LinkScope Lite coming soon to the Mac App Store</small>
             </span>
             <span className="product-row-description">
               Inspect wireless-accessory state across public macOS frameworks.
