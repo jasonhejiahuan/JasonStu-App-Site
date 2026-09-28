@@ -9,7 +9,7 @@ Current public routes:
 - `/trackpad-wizard` — Trackpad Wizard product exploration and verified download
 - `/trackpad-wizard/privacy` — current implementation privacy notes
 - `/trackpad-wizard/support` — Trackpad Wizard support path
-- `/linkscope` — LinkScope product exploration
+- `/linkscope` — LinkScope Lite 2.0.1 product exploration and free Mac App Store download
 - `/linkscope/privacy` — LinkScope Lite privacy policy
 - `/linkscope/support` — LinkScope support path
 

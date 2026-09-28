@@ -3,14 +3,14 @@ import { JasonStuSignature, SiteHeader } from "../site-header";
 import { DeviceInspector } from "./device-inspector";
 
 const pageDescription =
-  "A native macOS wireless-accessory inspector built around public, read-only system providers and explicit availability states.";
+  "LinkScope Lite is free on the Mac App Store. Inspect accessory details, record on-demand diagnostics, and create custom dashboards. Requires macOS 15 or later.";
 
 export const metadata: Metadata = {
-  title: "LinkScope",
+  title: "LinkScope Lite",
   description: pageDescription,
   alternates: { canonical: "/linkscope" },
   openGraph: {
-    title: "LinkScope — Inspect what macOS exposes",
+    title: "LinkScope Lite — Inspect what macOS exposes",
     description: pageDescription,
     url: "/linkscope",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LinkScope — Inspect what macOS exposes",
+    title: "LinkScope Lite — Inspect what macOS exposes",
     description: pageDescription,
     images: ["/linkscope-social.png"],
   },
@@ -61,6 +61,15 @@ const diagnosticSamples = [
   { time: "10:21:35", value: "−47", level: 75 },
 ];
 
+const dashboardWidgets = [
+  ["Current value", "Keep one system-reported reading in view."],
+  ["Availability status", "See whether a source can supply its value."],
+  ["Time series", "Follow recorded readings over time."],
+  ["Raw table", "Inspect the underlying parameters."],
+  ["Timeline", "Keep observation events in context."],
+  ["Provider health", "See the status of each system source."],
+];
+
 export default function LinkScopePage() {
   return (
     <>
@@ -73,18 +82,18 @@ export default function LinkScopePage() {
           </div>
 
           <div className="linkscope-intro">
-            <p className="eyebrow">Native macOS utility / LinkScope Lite coming soon</p>
-            <h1 id="linkscope-title">Inspect the wireless state macOS actually exposes.</h1>
+            <p className="eyebrow">LinkScope Lite / Free on the Mac App Store</p>
+            <h1 id="linkscope-title">A clearer view of your Mac’s accessories.</h1>
             <p className="lede">
-              LinkScope consolidates read-only observations from public system
-              providers, keeps unavailable values explicit, and records
-              diagnostics only when you start them.
+              Inspect Bluetooth, input, audio, and game controller details that
+              macOS exposes. Follow connection states, record diagnostics when
+              you need them, and arrange readings in your own dashboard.
             </p>
             <div className="opening-actions" aria-label="LinkScope actions">
-              <a className="primary-link" href="#inspector">Explore the inspector</a>
-              <a href="https://apps.apple.com/us/app/linkscope-lite/id6802596955">
-                Coming soon on the Mac App Store. <span aria-hidden="true">↗</span>
+              <a className="primary-link" href="https://apps.apple.com/app/linkscope-lite/id6802596955">
+                Download on the Mac App Store <span aria-hidden="true">↗</span>
               </a>
+              <a href="#inspector">Explore the inspector</a>
               <a href="https://github.com/jasonhejiahuan/LinkScope">
                 View source <span aria-hidden="true">↗</span>
               </a>
@@ -173,14 +182,58 @@ export default function LinkScopePage() {
           </figure>
         </section>
 
+        <section className="dashboard-chapter" aria-labelledby="dashboard-title">
+          <div className="chapter-intro">
+            <p className="eyebrow">04 / Arrange</p>
+            <h2 id="dashboard-title">Your readings. Your workspace.</h2>
+            <p>
+              Build named dashboards from six widget types. Move and resize them
+              with the pointer or keyboard, refine a layout with Undo and Redo,
+              and save it as a portable JSON document.
+            </p>
+          </div>
+          <figure className="dashboard-evidence">
+            <a href="/linkscope-dashboard.png" aria-label="Open the full-size LinkScope Lite dashboard screenshot">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/linkscope-dashboard-960.webp 960w, /linkscope-dashboard-1920.webp 1920w"
+                  sizes="(max-width: 54rem) 100vw, 90vw"
+                />
+                <img
+                  src="/linkscope-dashboard.png"
+                  width="2798"
+                  height="1664"
+                  loading="lazy"
+                  decoding="async"
+                  alt="LinkScope Lite’s Desk Overview dashboard with Audio Status, Input, Bluetooth, and Controllers provider-health widgets beside the Widget Inspector."
+                />
+              </picture>
+            </a>
+            <figcaption>Native Mac capture · English · Dark appearance · September 19, 2026. Open the image for full-size detail.</figcaption>
+          </figure>
+          <dl className="dashboard-widget-list">
+            {dashboardWidgets.map(([name, explanation]) => (
+              <div key={name}><dt>{name}</dt><dd>{explanation}</dd></div>
+            ))}
+          </dl>
+        </section>
+
         <section className="practical-chapter" aria-labelledby="practical-title">
           <div className="chapter-intro">
-            <p className="eyebrow">04 / App details</p>
+            <p className="eyebrow">05 / App details</p>
             <h2 id="practical-title">A quiet utility with a deeper inspector.</h2>
             <p>
-              The current source includes a menu-bar surface, searchable
-              device list, provider status, raw parameters, timeline, snapshots,
-              complete JSON import/export, monitoring rules, and Shortcuts actions.
+              Capture snapshots, import or export observation history as JSON,
+              and set monitoring rules with optional notifications. A menu-bar
+              summary and Shortcuts actions keep snapshots and diagnostics close
+              at hand.
+            </p>
+            <p>
+              Available readings depend on your Mac, accessories, and permissions.
+              Some devices expose no battery or signal-strength information.
+              LinkScope Lite observes system data; it does not pair devices,
+              change accessory settings, remap controls, or update firmware.
             </p>
           </div>
 
@@ -190,16 +243,18 @@ export default function LinkScopePage() {
               <tr><th>Edition</th><th>Distribution target</th><th>Provider boundary</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row">LinkScope</th><td>Developer ID</td><td>Public providers today; experiments remain isolated</td></tr>
-              <tr><th scope="row">LinkScope Lite</th><td>Mac App Store</td><td>Public, sandbox-compatible providers only</td></tr>
+              <tr><th scope="row">LinkScope Lite</th><td>Free on the Mac App Store</td><td>Public, sandbox-compatible providers only</td></tr>
+              <tr><th scope="row">LinkScope</th><td>Source build; Developer ID target</td><td>Public providers today; experiments remain isolated</td></tr>
             </tbody>
           </table>
 
           <dl className="practical-facts">
             <div><dt>Platform</dt><dd>macOS 15 or newer</dd></div>
             <div><dt>Languages</dt><dd>English and Simplified Chinese</dd></div>
-            <div><dt>Local history</dt><dd>Encrypted sensitive payloads; unlimited retention by default</dd></div>
-            <div><dt>Availability</dt><dd>LinkScope Lite is coming soon on the Mac App Store. Download availability has not been confirmed.</dd></div>
+            <div><dt>Version</dt><dd>LinkScope Lite 2.0.1 · Build 13</dd></div>
+            <div><dt>Price</dt><dd>Free · No app account required</dd></div>
+            <div><dt>Saved History</dt><dd>Optional; keeps observations and dashboards between launches</dd></div>
+            <div><dt>Source</dt><dd>Open source · AGPL-3.0-only</dd></div>
           </dl>
         </section>
 
@@ -213,10 +268,10 @@ export default function LinkScopePage() {
             decoding="async"
           />
           <div>
-            <p className="eyebrow">LinkScope / Lite coming soon</p>
+            <p className="eyebrow">LinkScope Lite / Available now</p>
             <h2 id="close-title">Follow the evidence, including the gaps.</h2>
             <div className="closing-links">
-              <a className="primary-link" href="https://github.com/jasonhejiahuan/LinkScope">Browse the source ↗</a>
+              <a className="primary-link" href="https://apps.apple.com/app/linkscope-lite/id6802596955">Download on the Mac App Store ↗</a>
               <a href="/linkscope/support">Support</a>
               <a href="/linkscope/privacy">Privacy</a>
             </div>

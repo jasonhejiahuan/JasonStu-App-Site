@@ -30,7 +30,7 @@ const routeCases = [
   ["/trackpad-wizard", /Make the surface visible/, "https://apps.jasonstu.cc/trackpad-wizard"],
   ["/trackpad-wizard/privacy", /Experiments stay on your Mac/, "https://apps.jasonstu.cc/trackpad-wizard/privacy"],
   ["/trackpad-wizard/support", /Support starts with what happened/, "https://apps.jasonstu.cc/trackpad-wizard/support"],
-  ["/linkscope", /Inspect the wireless state macOS actually exposes/, "https://apps.jasonstu.cc/linkscope"],
+  ["/linkscope", /A clearer view of your Mac’s accessories/, "https://apps.jasonstu.cc/linkscope"],
   ["/linkscope/privacy", /LinkScope Lite Privacy Policy/, "https://apps.jasonstu.cc/linkscope/privacy"],
   ["/linkscope/support", /Support begins with reproducible evidence/, "https://apps.jasonstu.cc/linkscope/support"],
 ];
@@ -61,7 +61,7 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /trackpad-wizard-icon-256\.webp/);
       assert.match(html, /macOS 26\+ \/ Public release/);
       assert.match(html, /href="\/linkscope"/);
-      assert.match(html, /LinkScope Lite coming soon to the Mac App Store/);
+      assert.match(html, /macOS 15\+ \/ Free on the Mac App Store/);
     }
 
     if (pathname === "/trackpad-wizard") {
@@ -91,9 +91,12 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /History/);
       assert.match(html, /Each value keeps its source and availability/);
       assert.match(html, /Evidence changes without losing provenance/);
-      assert.match(html, /Coming soon on the Mac App Store\./);
-      assert.match(html, /href="https:\/\/apps\.apple\.com\/us\/app\/linkscope-lite\/id6802596955"/);
-      assert.match(html, /Download availability has not been confirmed/);
+      assert.match(html, /Download on the Mac App Store/);
+      assert.match(html, /href="https:\/\/apps\.apple\.com\/app\/linkscope-lite\/id6802596955"/);
+      assert.match(html, /LinkScope Lite 2\.0\.1 · Build 13/);
+      assert.match(html, /Your readings\. Your workspace/);
+      assert.match(html, /linkscope-dashboard-960\.webp 960w/);
+      assert.match(html, /Source build; Developer ID target/);
       assert.match(html, /public\.corehid/);
       assert.match(html, /public\.iobluetooth/);
       assert.doesNotMatch(html, /Select a public provider lens/);
@@ -105,6 +108,16 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /30, 90, or 365 days/);
       assert.match(html, /older observation records only/);
       assert.match(html, /required for Bluetooth accessory inspection/);
+    }
+
+    if (pathname === "/" || pathname.startsWith("/linkscope")) {
+      assert.doesNotMatch(html, /coming soon|download availability has not been confirmed/i);
+    }
+
+    if (pathname === "/linkscope/support") {
+      assert.match(html, /LinkScope Lite 2\.0\.1 · Build 13/);
+      assert.match(html, /Permissions and saved history/);
+      assert.match(html, /Missing a device or reading/);
     }
 
     if (pathname.endsWith("/privacy") || pathname.endsWith("/support")) {

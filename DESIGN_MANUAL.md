@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository: 2026-09-23
+Last verified against the repository: 2026-09-28
 
 This document describes the website as it currently exists. It is not the
 design constitution or a changelog. Rewrite stale statements when meaningful
@@ -42,20 +42,24 @@ implementation, design, routing, browser, or deployment decisions change.
 - **Important constraints:** Preserve real nested routes, native navigation,
   source-grounded product claims, a no-JavaScript baseline, first-class Light
   and Dark appearance, and the absence of unnecessary runtime dependencies.
-- **Known limitations:** The current source has not yet had physical Safari,
-  Firefox, 200% zoom, or assistive-technology QA. Trackpad Wizard's current
+- **Known limitations:** The current source has not yet had a full physical Safari,
+  Firefox, 200% zoom, or assistive-technology QA pass. The September 28 LinkScope
+  update passed Chromium desktop/mobile, Light/Dark, reduced-motion, keyboard,
+  and no-JavaScript checks, plus a Safari Technology Preview direct load.
+  Trackpad Wizard's current
   repository captures document Light appearance; the page preserves that state
-  rather than fabricating Dark screenshots. LinkScope Lite has a supplied Mac
-  App Store listing URL, but its listing contents and download availability have
-  not been verified. The LinkScope Lite privacy page is a distribution policy
+  rather than fabricating Dark screenshots. LinkScope Lite 2.0.1 (13) is now
+  available free on the Mac App Store, verified against App Store Connect and
+  Apple's public US lookup on September 28. Availability in every storefront
+  has not been individually checked. The LinkScope Lite privacy page is a distribution policy
   grounded in the 2.0.1 source; Trackpad Wizard privacy remains implementation
   notes. The production Worker has comparative lab measurements and operational telemetry,
   but not yet enough real-user traffic for field Core Web Vitals conclusions.
 - **Next recommended work:** Run the physical browser and VoiceOver matrix,
   observe production request/error/latency behavior, and retain the beta
   rollback path until the production observation period is complete.
-  Replace Trackpad Wizard captures when its interface changes materially, and
-  advertise a LinkScope download only when its public availability is verified.
+  Replace product captures when their interfaces change materially and keep
+  release facts aligned with the public stores and source repositories.
 
 ## Authority and update rule
 
@@ -76,7 +80,7 @@ constitution to match it.
 | `/trackpad-wizard` | Trackpad Wizard product chapter, release facts, and verified download | Server-rendered document |
 | `/trackpad-wizard/privacy` | Current implementation privacy notes | Server-rendered document |
 | `/trackpad-wizard/support` | Current support path and issue-reporting guidance | Server-rendered document |
-| `/linkscope` | LinkScope product chapter and explanatory inspector | Server-rendered document |
+| `/linkscope` | LinkScope Lite release, explanatory inspector, dashboards, and App Store download | Server-rendered document |
 | `/linkscope/privacy` | LinkScope Lite 2.0.1 privacy policy | Server-rendered document |
 | `/linkscope/support` | Current support path and issue-reporting guidance | Server-rendered document |
 | unmatched route | Collection-aware not-found page | Real HTTP `404` |
@@ -143,12 +147,27 @@ as a distinct application window with a quiet title bar, toolbar, device
 sidebar, and detail workspace. This bounded window treatment is reserved for
 the product demonstration; it is not a reusable card or site-wide decoration.
 
-The page rhythm moves from a quiet icon-led opening to a dense provider
-inspector, a high-contrast availability chapter, a measured diagnostic trace,
-and practical app facts. It deliberately omits pricing, testimonials,
-conversion claims, fabricated screenshots, and an unverified download action.
-The supplied Apple listing link is explicitly labelled coming soon; it is not
-presented as a working download.
+The page rhythm moves from an icon-led Lite introduction and verified App Store
+action to a dense device inspector, a high-contrast availability chapter, a
+measured diagnostic trace, a real dashboard capture with six widget explanations,
+and practical release facts. Lite is explicitly free, version 2.0.1 (13), for
+macOS 15+. Full is labelled as a source build with a Developer ID target, without
+implying a verified binary download. The country-neutral Apple link lets the
+store select a visitor's region. Support explains permissions, optional Saved
+History, and hardware-dependent readings. Detailed data handling stays in the
+privacy policy, whose September 23 effective date and 2.0.1 scope remain valid.
+
+The dashboard image comes from LinkScope `f5487f9`,
+`Design/AppStore/2.0.0/captured/dashboard-en.png`. Its provenance records a
+September 19 native macOS capture, English, Dark appearance, 2798 × 1664; the
+exact captured build and macOS version were not recorded. It is the capture used
+in the current repository README, not a newly captured build 13 session. The
+original PNG is retained as the full-size native link and fallback. Responsive
+960/1920-pixel WebP copies are approximately 25/108 KB. The figure keeps its actual
+Dark appearance in both website themes, has a textual alternative, and loads
+lazily. Widget descriptions reflow to one column on narrow screens. No client
+interaction or dependency was added. Audit evidence and remaining metadata
+inconsistencies are recorded in `docs/audits/linkscope-2.0.1.md`.
 
 Trackpad Wizard's thesis is “follow the physical surface from contact to
 response.” Its silver production icon, ultraviolet-violet active-state accent,
@@ -358,8 +377,8 @@ URLs, so it does not compete with the official host in search results.
 
 ## Open questions and technical debt
 
-- Which signed LinkScope build and durable App Store or direct-download
-  destination will become the first verified public release?
+- Full LinkScope has no verified public binary download in this audit; its
+  Developer ID distribution target must not be presented as an available release.
 - Does a later collection need an Auto/Light/Dark selector in addition to the
   current system-preference behavior?
 - Should future product additions justify a shared typed index for name, route,
@@ -377,8 +396,8 @@ URLs, so it does not compete with the official host in search results.
    Cloudflare dashboard; reduce sampling after the initial observation period.
 2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
    reduced-motion checks; record only actionable differences.
-3. Reconcile LinkScope release metadata and add a download only after its signed
-   distribution path is public and verified.
+3. Keep LinkScope Lite release facts aligned with Apple; reconcile the historical
+   App Review notes and changelog when preparing the next native release.
 4. Replace Trackpad Wizard captures after material interface changes and record
    both Light and Dark evidence when the app supplies both.
 5. Update either privacy document when its app's storage, permission, network,

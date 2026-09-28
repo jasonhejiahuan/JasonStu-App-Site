@@ -44,11 +44,11 @@ export default function Home() {
           <a className="product-row" href="/linkscope">
             <img src="/linkscope-mark.svg" width="465" height="432" alt="" />
             <span className="product-row-identity">
-              <span className="product-row-name">LinkScope</span>
-              <small>macOS / LinkScope Lite coming soon to the Mac App Store</small>
+              <span className="product-row-name">LinkScope Lite</span>
+              <small>macOS 15+ / Free on the Mac App Store</small>
             </span>
             <span className="product-row-description">
-              Inspect wireless-accessory state across public macOS frameworks.
+              Inspect your Mac’s accessories, record diagnostics, and arrange custom dashboards.
             </span>
             <span aria-hidden="true">↗</span>
           </a>

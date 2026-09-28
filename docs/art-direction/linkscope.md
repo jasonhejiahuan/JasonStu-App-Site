@@ -25,10 +25,23 @@ accessory.
 
 The current source contains Full and Lite editions, English and Simplified
 Chinese UI, and encrypted local persistence for sensitive payloads. LinkScope
-Lite has a supplied Mac App Store URL, but public availability is unconfirmed.
-The website labels the link as coming soon and does not present it as a working
-download. It does not invent pricing or a release date. The product page does
-not publish a version number.
+Lite 2.0.1 (13) is released on the Mac App Store. On September 28, 2026,
+App Store Connect and Apple's public US lookup confirmed the version; the public
+listing reports Free and macOS 15+. The opening and closing actions lead to that
+listing. Full remains a source edition with a Developer ID distribution target.
+
+### Released-edition update brief — September 28, 2026
+
+Keep the device-led thesis, blue accent, native detail tabs, and existing
+Light/Dark typography. Name the available Lite edition at the opening and retain
+the inspect → interpret → diagnose sequence. Follow it with a quieter dashboard
+chapter: a real repository capture plus six concise widget descriptions, then
+release facts and support. The capture retains its original Dark appearance in
+both themes; it is evidence, not a second interactive simulation. Narrow layouts
+reflow the widget descriptions and keep a link to the full-size image. All new
+content and actions are server-rendered, use native links, and need no JavaScript
+or motion. Source: LinkScope `f5487f9`, current App Store description, and the
+September 19 native dashboard capture used by the current repository README.
 
 ## Required brief
 

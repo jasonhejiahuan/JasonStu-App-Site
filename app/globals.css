@@ -403,6 +403,7 @@
   .inspection-chapter,
   .availability-chapter,
   .diagnostic-chapter,
+  .dashboard-chapter,
   .practical-chapter,
   .linkscope-close {
     padding: var(--chapter) var(--gutter);
@@ -722,6 +723,15 @@
   .diagnostic-samples .gap .sample-line { width: 100%; height: 1px; align-self: center; background: repeating-linear-gradient(90deg, var(--line-strong) 0 0.3rem, transparent 0.3rem 0.6rem); }
   .diagnostic-samples .gap .sample-value { color: var(--text-secondary); }
   .diagnostic-figure figcaption { padding-block: 0.85rem; color: var(--text-secondary); font-size: 0.75rem; }
+
+  .dashboard-evidence { max-width: 86rem; margin: clamp(3rem, 6vw, 6rem) auto 0; }
+  .dashboard-evidence a { display: block; }
+  .dashboard-evidence img { display: block; width: 100%; height: auto; }
+  .dashboard-evidence figcaption { margin-block-start: 1rem; color: var(--text-secondary); font-size: 0.8rem; }
+  .dashboard-widget-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 3rem; margin-block-start: 2.5rem; }
+  .dashboard-widget-list div { padding-block: 1.25rem; border-block-start: 1px solid var(--line); }
+  .dashboard-widget-list dt { font-weight: 600; }
+  .dashboard-widget-list dd { margin-block-start: 0.4rem; color: var(--text-secondary); }
 
   .practical-chapter { background: var(--canvas-muted); }
   .edition-table { width: 100%; margin-block-start: clamp(4rem, 8vw, 8rem); border-collapse: collapse; text-align: left; }
@@ -1081,7 +1091,8 @@
     .edition-table { display: block; overflow-x: auto; }
     .edition-table th,
     .edition-table td { min-width: 10rem; }
-    .practical-facts { grid-template-columns: 1fr; }
+    .practical-facts,
+    .dashboard-widget-list { grid-template-columns: 1fr; }
     .practical-facts div:nth-child(odd),
     .practical-facts div:nth-child(even) { padding-inline: 0; border-inline-end: 0; }
     .document-facts div { grid-template-columns: 1fr; gap: 0.2rem; }
