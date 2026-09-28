@@ -27,12 +27,12 @@ async function render(pathname, environment = {}, request = {}) {
 
 const routeCases = [
   ["/", /Independent apps/, "https://apps.jasonstu.cc"],
-  ["/trackpad-wizard", /Make the surface visible/, "https://apps.jasonstu.cc/trackpad-wizard"],
+  ["/trackpad-wizard", /A closer look at every touch/, "https://apps.jasonstu.cc/trackpad-wizard"],
   ["/trackpad-wizard/privacy", /Experiments stay on your Mac/, "https://apps.jasonstu.cc/trackpad-wizard/privacy"],
-  ["/trackpad-wizard/support", /Support starts with what happened/, "https://apps.jasonstu.cc/trackpad-wizard/support"],
-  ["/linkscope", /A clearer view of your Mac’s accessories/, "https://apps.jasonstu.cc/linkscope"],
+  ["/trackpad-wizard/support", /Trackpad Wizard support/, "https://apps.jasonstu.cc/trackpad-wizard/support"],
+  ["/linkscope", /A clearer view of your Mac/, "https://apps.jasonstu.cc/linkscope"],
   ["/linkscope/privacy", /LinkScope Lite Privacy Policy/, "https://apps.jasonstu.cc/linkscope/privacy"],
-  ["/linkscope/support", /Support begins with reproducible evidence/, "https://apps.jasonstu.cc/linkscope/support"],
+  ["/linkscope/support", /LinkScope support/, "https://apps.jasonstu.cc/linkscope/support"],
 ];
 
 for (const [pathname, expected, canonical] of routeCases) {
@@ -48,6 +48,17 @@ for (const [pathname, expected, canonical] of routeCases) {
     assert.match(html, expected);
     assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/i);
     assert.match(html, /<main[^>]+id="main-content"/i);
+    assert.match(html, /<main[^>]+tabindex="-1"/i);
+    assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length, 1);
+    assert.doesNotMatch(html, /class="eyebrow"|availability-number|scope-caption/);
+    assert.match(html, /aria-label="Primary navigation"/);
+    assert.match(html, /aria-label="Footer navigation"/);
+    if (pathname.endsWith("/privacy") || pathname.endsWith("/support")) {
+      assert.match(html, /aria-current="location"/);
+      assert.doesNotMatch(html, /aria-current="page"/);
+    } else if (pathname !== "/") {
+      assert.match(html, /aria-current="page"/);
+    }
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical}"`));
     assert.match(html, />JasonStu<\/span><span>Apps<\/span>/);
 
@@ -59,21 +70,21 @@ for (const [pathname, expected, canonical] of routeCases) {
     if (pathname === "/") {
       assert.match(html, /href="\/trackpad-wizard"/);
       assert.match(html, /trackpad-wizard-icon-256\.webp/);
-      assert.match(html, /macOS 26\+ \/ Public release/);
+      assert.match(html, /Available for Mac · macOS 26\+/);
       assert.match(html, /href="\/linkscope"/);
-      assert.match(html, /macOS 15\+ \/ Free on the Mac App Store/);
+      assert.match(html, /Free on the Mac App Store · macOS 15\+/);
     }
 
     if (pathname === "/trackpad-wizard") {
       assert.match(html, /https:\/\/apps\.jasonstu\.cc\/trackpad-wizard-overview\.png/);
       assert.doesNotMatch(html, /https:\/\/apps\.jasonstu\.cc\/og\.png/);
-      assert.match(html, /One surface\. Six ways to understand it/);
+      assert.match(html, /The whole surface, in view/);
       assert.match(html, /Touch Lab/);
       assert.match(html, /Gesture Studio/);
       assert.match(html, /Haptic Composer/);
       assert.match(html, /System mode/);
       assert.match(html, /Enhanced Mode/);
-      assert.match(html, /Signed and notarized DMG/);
+      assert.match(html, /Version 0\.3\.0 \(Build 4\)/);
       assert.match(html, /Trackpad-Wizard-0\.3\.0-build-4\.dmg/);
       assert.match(html, /href="\/trackpad-wizard\/privacy"/);
       assert.match(html, /href="\/trackpad-wizard\/support"/);
@@ -82,24 +93,14 @@ for (const [pathname, expected, canonical] of routeCases) {
     if (pathname === "/linkscope") {
       assert.match(html, /https:\/\/apps\.jasonstu\.cc\/linkscope-social\.png/);
       assert.doesNotMatch(html, /https:\/\/apps\.jasonstu\.cc\/og\.png/);
-      assert.match(html, /Interactive reconstruction/);
-      assert.match(html, /LinkScope application demonstration/);
-      assert.match(html, /Explore a LinkScope device record/);
-      assert.match(html, /Magic Trackpad/);
-      assert.match(html, /Transport identities/);
-      assert.match(html, /Raw Parameters/);
-      assert.match(html, /History/);
-      assert.match(html, /Each value keeps its source and availability/);
-      assert.match(html, /Evidence changes without losing provenance/);
       assert.match(html, /Download on the Mac App Store/);
       assert.match(html, /href="https:\/\/apps\.apple\.com\/app\/linkscope-lite\/id6802596955"/);
-      assert.match(html, /LinkScope Lite 2\.0\.1 · Build 13/);
-      assert.match(html, /Your readings\. Your workspace/);
+      assert.match(html, /Version 2\.0\.1/);
+      assert.match(html, /Your readings\./);
       assert.match(html, /linkscope-dashboard-960\.webp 960w/);
-      assert.match(html, /Source build; Developer ID target/);
-      assert.match(html, /public\.corehid/);
-      assert.match(html, /public\.iobluetooth/);
-      assert.doesNotMatch(html, /Select a public provider lens/);
+      assert.match(html, /Not exposed by macOS/);
+      assert.match(html, /href="\/linkscope\/support"/);
+      assert.doesNotMatch(html, /Interactive reconstruction|Representative values|seven public sources/);
     }
 
     if (pathname === "/linkscope/privacy") {
@@ -231,7 +232,7 @@ test("falls back to complete HTML when Markdown conversion is unavailable", asyn
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-  assert.match(await response.text(), /Support starts with what happened/);
+  assert.match(await response.text(), /Trackpad Wizard support/);
 });
 
 test("negotiates Markdown metadata for HEAD without invoking conversion", async () => {

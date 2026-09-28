@@ -28,6 +28,7 @@ Cloudflare deployment configuration lives in `wrangler.jsonc`. The production
 Worker serves `https://apps.jasonstu.cc`; the named `beta` environment serves the
 no-index staging origin at `https://apps.beta.jasonstu.cc`.
 
-Read `AGENTS.md`, then `DESIGN_MANUAL.md`, before substantial work. The governing
-design, accessibility, browser, progressive-enhancement, and performance policy
-is in `DESIGN_GUIDELINES.md`.
+`DESIGN_MANUAL.md` records the current architecture and validation. The whole-site
+visual direction is recorded in `docs/art-direction/site-visual-rebuild.md`:
+shared typography and alignment, real product captures, and detailed guidance on
+the support routes. Earlier product briefs describe superseded compositions.

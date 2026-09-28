@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "../../site-header";
+import { SiteFooter, SiteHeader } from "../../site-header";
 
 const description =
   "How LinkScope Lite for macOS handles accessory data, local history, exports, permissions, and support requests.";
@@ -27,9 +27,9 @@ export default function PrivacyPage() {
   return (
     <>
       <SiteHeader product="LinkScope" />
-      <main id="main-content" className="document-page">
+      <main id="main-content" tabIndex={-1} className="document-page">
         <header className="document-title">
-          <p className="eyebrow">LinkScope Lite / Privacy / September 23, 2026</p>
+          <p className="document-context">LinkScope Lite / Privacy / September 23, 2026</p>
           <h1>LinkScope Lite Privacy Policy</h1>
           <p>Effective September 23, 2026 · Applies to LinkScope Lite 2.0.1 for macOS · Developer: JASON Studio</p>
           <p>
@@ -189,6 +189,7 @@ export default function PrivacyPage() {
           <a href="/linkscope/support">Get support</a>
         </nav>
       </main>
+      <SiteFooter />
     </>
   );
 }

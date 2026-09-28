@@ -1,404 +1,212 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last verified against the repository: 2026-09-28
+Last checked against source and repository evidence: 2026-09-28
 
-This document describes the website as it currently exists. It is not the
-design constitution or a changelog. Rewrite stale statements when meaningful
-implementation, design, routing, browser, or deployment decisions change.
+This manual records the website that is implemented and the current shared
+visual direction. It is not a release changelog. Replace outdated descriptions
+when source, routes, deployment, or product evidence changes.
 
-## Session Resume
+## Current state
 
-- **Project status:** The collection now contains two independent app chapters.
-  LinkScope retains its device-led inspector; Trackpad Wizard adds a separate,
-  screenshot-led tactile chapter with a verified public download. Cloudflare
-  Workers now serves the canonical production origin. The no-index beta Worker
-  remains available at `https://apps.beta.jasonstu.cc`. The former ChatGPT Sites
-  project is owner-only and no longer part of the source or deployment path.
-- **Canonical origin:** `https://apps.jasonstu.cc`. Canonical, sitemap, and
-  social metadata use this origin. The beta hostname is explicitly excluded
-  from search indexing.
-- **Implemented routes:** `/`; `/trackpad-wizard`, `/trackpad-wizard/privacy`,
-  `/trackpad-wizard/support`; and `/linkscope`, `/linkscope/privacy`,
-  `/linkscope/support`. Unknown routes return a real `404` document.
-- **Stack:** TypeScript, React 19, vinext 1 beta, Vite 8, Cloudflare Workers
-  Static Assets, and Workers AI Markdown Conversion. npm is the package manager.
-- **Rendering and routing:** App Router-shaped server rendering through vinext.
-  Every public route returns meaningful HTML directly. Ordinary navigation uses
-  native anchors; no client router or application-specific client JavaScript is
-  required for core content or interaction.
-- **Design state:** The shared collection remains a restrained editorial index.
-  LinkScope is a device-led technical chapter derived from the current app,
-  supplied screenshots, production mark, transport/provider provenance,
-  availability states, and diagnostic model. Its approved brief is
-  `docs/art-direction/linkscope.md`. Trackpad Wizard follows a physical-surface
-  signal from contact through gesture interpretation to haptic or shortcut
-  response, using the production icon and two real application captures. Its
-  approved brief is `docs/art-direction/trackpad-wizard.md`.
-- **Browser enhancements:** CSS `:has()` powers device-detail tab selection,
-  `content-visibility` defers below-fold rendering, and cross-document View
-  Transitions provide optional continuity. Each has a complete CSS/native
-  fallback; reduced motion disables transition behavior.
-- **Important constraints:** Preserve real nested routes, native navigation,
-  source-grounded product claims, a no-JavaScript baseline, first-class Light
-  and Dark appearance, and the absence of unnecessary runtime dependencies.
-- **Known limitations:** The current source has not yet had a full physical Safari,
-  Firefox, 200% zoom, or assistive-technology QA pass. The September 28 LinkScope
-  update passed Chromium desktop/mobile, Light/Dark, reduced-motion, keyboard,
-  and no-JavaScript checks, plus a Safari Technology Preview direct load.
-  Trackpad Wizard's current
-  repository captures document Light appearance; the page preserves that state
-  rather than fabricating Dark screenshots. LinkScope Lite 2.0.1 (13) is now
-  available free on the Mac App Store, verified against App Store Connect and
-  Apple's public US lookup on September 28. Availability in every storefront
-  has not been individually checked. The LinkScope Lite privacy page is a distribution policy
-  grounded in the 2.0.1 source; Trackpad Wizard privacy remains implementation
-  notes. The production Worker has comparative lab measurements and operational telemetry,
-  but not yet enough real-user traffic for field Core Web Vitals conclusions.
-- **Next recommended work:** Run the physical browser and VoiceOver matrix,
-  observe production request/error/latency behavior, and retain the beta
-  rollback path until the production observation period is complete.
-  Replace product captures when their interfaces change materially and keep
-  release facts aligned with the public stores and source repositories.
+- **Site:** The public collection of independent JASON Studio applications at
+  `https://apps.jasonstu.cc`. The current product routes are LinkScope Lite and
+  Trackpad Wizard.
+- **Routes:** `/`; `/linkscope`, `/linkscope/support`,
+  `/linkscope/privacy`; `/trackpad-wizard`, `/trackpad-wizard/support`, and
+  `/trackpad-wizard/privacy`. Unknown paths return an HTTP 404 document.
+- **Rendering:** TypeScript, React 19, vinext App Router-compatible server
+  rendering, Vite, and Cloudflare Workers Static Assets. Each route emits useful
+  HTML on direct load. Core content and navigation use semantic HTML and native
+  anchors, with no application-specific client interaction required.
+- **Shared visual direction:** Native system sans typography; warm paper and
+  ink neutrals, with blue links; consistent content edges, type hierarchy, and
+  section rhythm; real product imagery; and fine separators where they clarify
+  content. The collection home, both product chapters, and their support and
+  privacy pages share this visual language while keeping product-specific
+  content and imagery. The active concise brief is
+  `docs/art-direction/site-visual-rebuild.md`.
+- **Product content:** LinkScope Lite is free on the Mac App Store, version
+  2.0.1 (13), for macOS 15 or later. Its page describes read-only inspection
+  of macOS-exposed device details, explicit availability, diagnostics started
+  on demand, and six dashboard widget types. Its LinkScope Lite 2.0.1 policy
+  took effect September 23, 2026; support explains permissions, local history,
+  readings, diagnostics, release facts, and safe issue reporting. Trackpad Wizard
+  presents its current 0.3.0 (Build 4) release and macOS 26+ requirement. Its
+  support and privacy pages describe the app's current mode, permission,
+  storage, and distribution boundaries. Product claims and document facts stay
+  in their owning pages and must remain grounded in the app and release evidence.
+- **Visual audit and checks:** On 2026-09-28, lint, typecheck, the 18 rendered
+  HTML/SSR checks, production build, and Cloudflare deployment dry run passed.
+  Chromium reflow, both appearances, no-JavaScript navigation, and selected
+  Safari Technology Preview views were also checked as detailed below.
 
-## Authority and update rule
+## Authority and current design decision
 
-1. `AGENTS.md` gives the minimum always-loaded workflow.
-2. This manual records current project reality.
-3. `DESIGN_GUIDELINES.md` governs design and engineering quality.
-4. Source and configuration are the final evidence of implemented behavior.
+1. `AGENTS.md` describes the project workflow and routing invariants.
+2. This manual describes current implementation and operation.
+3. `docs/art-direction/site-visual-rebuild.md` records the latest user-directed
+   shared site style. Where it conflicts with older visual treatments or
+   generic styling language in previous app briefs, the latest direction wins.
+4. Route source, public assets, app source, release records, and configuration
+   are evidence of current behavior and facts.
 
-If source and this manual disagree, correct this manual. If source temporarily
-violates the constitution, record that as explicit debt here; do not weaken the
-constitution to match it.
+Do not change app behavior or policy claims as part of visual work. The
+LinkScope privacy page, both apps' support instructions, and Trackpad Wizard's
+privacy notes are source-authored product documents. Preserve their meaning
+unless the underlying product evidence changes.
 
-## Route map
+## Rendering and runtime
 
-| Route | Current role | Rendering |
-| --- | --- | --- |
-| `/` | JasonStu Apps collection home and public-app index | Server-rendered document |
-| `/trackpad-wizard` | Trackpad Wizard product chapter, release facts, and verified download | Server-rendered document |
-| `/trackpad-wizard/privacy` | Current implementation privacy notes | Server-rendered document |
-| `/trackpad-wizard/support` | Current support path and issue-reporting guidance | Server-rendered document |
-| `/linkscope` | LinkScope Lite release, explanatory inspector, dashboards, and App Store download | Server-rendered document |
-| `/linkscope/privacy` | LinkScope Lite 2.0.1 privacy policy | Server-rendered document |
-| `/linkscope/support` | Current support path and issue-reporting guidance | Server-rendered document |
-| unmatched route | Collection-aware not-found page | Real HTTP `404` |
+- `app/` contains the shared layout and shell, collection home, two product
+  pages, support and privacy documents, not-found page, metadata, and global CSS.
+- `app/layout.tsx` sets the production metadata base, document language,
+  appearance theme colors, and keyboard skip link. Each main landmark accepts
+  focus through `tabIndex={-1}`. Shared header and footer markup live in
+  `app/site-header.tsx`; navigation distinguishes the current product page from
+  its document section with `aria-current="page"` and `"location"` respectively.
+- `app/globals.css` defines reset, system-preference Light/Dark colors, system
+  sans typography, shared shell, content sections, document measure, responsive
+  stacking, focus, reduced-motion scroll behavior, forced-colors, and print
+  rules. There is no custom font download or front-end component library.
+- The pages use semantic server-rendered React. Product interactions are links
+  to app, store, source, and documentation destinations; there is no simulated
+  LinkScope inspector or client-side application router.
+- `worker/index.ts` delegates ordinary page routing to vinext and applies
+  response headers, beta indexing policy, `/robots.txt`, and optional
+  `text/markdown` conversion through Workers AI. HTML is the complete fallback
+  if conversion is unavailable. Vite and the Cloudflare plugin build the Worker
+  and static assets.
+- `wrangler.jsonc` defines the production Worker and named `beta` environment.
+  Pages are static source-authored documents revalidated hourly and cached at
+  the Cloudflare edge. The repository does not use D1, R2, authentication,
+  browser analytics, site cookies, or a third-party browser script.
 
-Routes are durable lowercase paths. Direct requests, reload, Back, Forward,
-bookmarks, and copied URLs use normal browser semantics. Each app owns a top-level
-slug and an independent composition; Trackpad Wizard intentionally does not
-inherit LinkScope's application-window reconstruction.
+## Route roles and shared shell
 
-## Frontend, build, and rendering architecture
+The collection home is the index to public apps and gives each entry its own
+title, concise purpose, availability/requirements, and links. Product pages
+remain separate chapters rather than recolored copies. Support and privacy
+documents use the same header, footer, system typography, page edges, and link
+style, while retaining each app's established factual content. Durable lowercase
+paths support direct navigation, reload, bookmarks, sharing, Back, and Forward.
 
-- `app/` contains route documents, metadata, the shared header, and global CSS.
-- vinext provides the App Router-compatible server renderer; Vite builds the
-  Worker and browser assets. `worker/index.ts` delegates requests to the vinext
-  handler and adds passive security, cache, beta-indexing, crawler-policy, and
-  Markdown content-negotiation behavior. A Workers AI binding converts only
-  successful HTML page responses explicitly requested as `text/markdown`.
-- The Cloudflare Vite plugin and `@vinext/cloudflare` CDN adapter produce the
-  Workers deployment. The former Sites Vite plugin and `.openai/hosting.json`
-  have been removed so the repository has a single hosting path. The project has
-  no D1, R2, authentication, browser analytics, application persistence, or
-  third-party script.
-- Pages are declared static with a one-hour revalidation interval. The CDN
-  adapter stores rendered responses at the edge while direct requests still run
-  through the Worker entry point for routing and response policy.
-- React is used as server-rendered authoring syntax. The LinkScope device
-  inspector uses native radio markup plus CSS rather than a hydrated client
-  component. Its responsive composition transforms from a desktop sidebar/detail
-  window into a stacked device browser and detail workspace; it is never scaled
-  down into unreadable miniature desktop UI.
-- Trackpad Wizard uses semantic capability and mode sequences plus real, current
-  repository captures. It has no simulated touch surface or hydrated interaction;
-  WebP presentation copies reduce transfer while PNG/JPEG sources preserve
-  truthful image and social-preview fallbacks.
-- Product and document links are ordinary `<a>` elements. Cross-document
-  enhancement may animate compatible navigation, but routing never depends on
-  it.
+All site navigation is implemented with ordinary `<a>` elements. Use links for
+route changes and external destinations; keep browser history and native focus
+behavior. Each public route must continue to return its own meaningful HTML on
+direct request and reload, and the unmatched path must remain a real 404.
 
-## Shared shell and content model
+## Visual system
 
-The shared shell is intentionally small: a skip link, the original text-only
-header wordmark, primary route context, and concise footer where appropriate.
-The supplied JasonStu logo appears only as a quiet footer publishing signature;
-it does not alter or compete with the established header. The collection home
-presents two typographic product rows rather than a generic equal-card grid. The
-header exposes both products on the collection route and the other product from
-within each chapter.
+The shared composition uses one centered site width and repeated alignment
+anchors so the home, app chapters, and documents read as one publisher's site.
+The standard content width is 80rem with fluid side gutters; long-form support
+and privacy content narrows to approximately 51rem. Sections are separated by
+space, clear headings, and thin rules. Real product captures carry the visual
+weight; content must not be padded with decorative microcopy.
 
-The second product proved that action groups, primary links, closing links, the
-header and publishing signature are genuinely shared, so their styling lives in
-the shared layer. Product facts remain near their owning routes; no shared data
-model is introduced while release and availability semantics still differ.
-Every claim remains traceable to current source, assets, documentation, release
-metadata, or inspected behavior.
+Use the operating system's sans-serif stack for all interface and editorial
+text. Preserve a clear scale: large route titles, readable section titles, and
+comfortable body text. Avoid tiny monospaced eyebrows, numbered bubble steps,
+design-explanation captions, purple-gradient marketing treatments, and generic
+colored rounded feature-card grids. Blue serves ordinary links and focused
+actions against warm-white/ink neutrals. Product-specific color may remain in
+authentic app artwork or actual captured interface, not in a site-wide card or
+gradient system.
 
-## Current art direction
+Responsive layouts reflow into a single column at narrow widths while retaining
+logical source order, useful screenshot size, readable type, tappable links, and
+the same content alignment. Avoid empty side columns and forced desktop
+composition on phones. Appearance follows `prefers-color-scheme`; Light and Dark
+tokens preserve readable contrast and visible focus. Respect reduced motion and
+forced-colors settings.
 
-LinkScope's thesis is “follow the evidence, including the gaps.” Its dominant
-materials are the production scope/orbit mark, the device → transport/provider →
-parameter relationship, availability language, and a privacy-safe explanatory
-reconstruction. Blue is the product accent and marks sources, selection, and
-observed data; status colors keep semantic roles. The reconstruction now reads
-as a distinct application window with a quiet title bar, toolbar, device
-sidebar, and detail workspace. This bounded window treatment is reserved for
-the product demonstration; it is not a reusable card or site-wide decoration.
+## Product evidence and assets
 
-The page rhythm moves from an icon-led Lite introduction and verified App Store
-action to a dense device inspector, a high-contrast availability chapter, a
-measured diagnostic trace, a real dashboard capture with six widget explanations,
-and practical release facts. Lite is explicitly free, version 2.0.1 (13), for
-macOS 15+. Full is labelled as a source build with a Developer ID target, without
-implying a verified binary download. The country-neutral Apple link lets the
-store select a visitor's region. Support explains permissions, optional Saved
-History, and hardware-dependent readings. Detailed data handling stays in the
-privacy policy, whose September 23 effective date and 2.0.1 scope remain valid.
+- **LinkScope release:** LinkScope Lite 2.0.1 (13) is free on the Mac App Store
+  and requires macOS 15+. The September 28, 2026 release audit records App Store
+  Connect and Apple's public US lookup verification, together with its limits
+  and unresolved release-document inconsistencies:
+  `docs/audits/linkscope-2.0.1.md`. Do not call the dashboard capture a fresh
+  build 13 capture.
+- **LinkScope dashboard:** `public/linkscope-dashboard.png` is derived from
+  LinkScope source commit `f5487f9`,
+  `Design/AppStore/2.0.0/captured/dashboard-en.png`. The documented native
+  capture was made September 19, English, Dark appearance, at 2798 × 1664. Its
+  precise app build and macOS version were not recorded. Responsive WebP copies
+  are presentation derivatives; the PNG is retained as the full-size source and
+  fallback. Preserve the original appearance and provide text describing the
+  six dashboard widgets.
+- **Trackpad Wizard:** The production icon is copied to
+  `public/trackpad-wizard-icon.png`. The Overview and Gesture Studio images are
+  real repository captures from August 30, 2026. The Overview's full-size PNG
+  and the Gesture Studio JPEG remain the source captures; WebP files are
+  presentation copies. Do not claim a browser demonstration is collecting live
+  trackpad input.
+- `public/jasonstu-logo.svg` and `public/jasonstu-logo-dark.png` are supplied
+  publisher artwork used in the footer, with a CSS monochrome filter preserving
+  contrast in both appearances. The LinkScope mark, app icon, screenshots,
+  favicon, and social images are local assets; page backgrounds do not use
+  screenshot or social art.
+- Keep public images truthful, privacy-safe, correctly proportioned, and
+  responsive. Provide meaningful alternative text for evidence and empty alt
+  text for decorative marks.
 
-The dashboard image comes from LinkScope `f5487f9`,
-`Design/AppStore/2.0.0/captured/dashboard-en.png`. Its provenance records a
-September 19 native macOS capture, English, Dark appearance, 2798 × 1664; the
-exact captured build and macOS version were not recorded. It is the capture used
-in the current repository README, not a newly captured build 13 session. The
-original PNG is retained as the full-size native link and fallback. Responsive
-960/1920-pixel WebP copies are approximately 25/108 KB. The figure keeps its actual
-Dark appearance in both website themes, has a textual alternative, and loads
-lazily. Widget descriptions reflow to one column on narrow screens. No client
-interaction or dependency was added. Audit evidence and remaining metadata
-inconsistencies are recorded in `docs/audits/linkscope-2.0.1.md`.
+## Metadata, crawling, and deployment
 
-Trackpad Wizard's thesis is “follow the physical surface from contact to
-response.” Its silver production icon, ultraviolet-violet active-state accent,
-real Overview and Gesture Studio captures, six-workspace ledger, and explicit
-System/Enhanced boundary form its identity. The page does not simulate trackpad
-input in the browser. Its rhythm moves from a quiet icon and release action to a
-wide application capture, a faster capability ledger, a second focused capture,
-a high-contrast mode boundary, and verified release facts.
+The canonical origin is `https://apps.jasonstu.cc`. Route canonical, sitemap,
+and social metadata use that host. The sitemap contains the seven public routes;
+`/robots.txt` permits crawling and points to the sitemap. The Worker adds
+search-preview response headers to HTML. The beta host is excluded from
+indexing.
 
-The direct download resolves to the current 0.3.0 (Build 4) notarized DMG. The
-page names macOS 26+, Developer ID signing, notarization, stapling, SHA-256
-verification, MPL-2.0 source, local data behavior, and Accessibility scope only
-because each is supported by the current app source or public release.
+Cloudflare Workers is the production runtime. The `jasonstu-apps` Worker serves
+the custom domain `apps.jasonstu.cc` and its Static Assets. The existing
+`jasonstu-apps-beta` Worker at `https://apps.beta.jasonstu.cc` is a separate
+no-index beta and rollback target. Cloudflare Workers Builds watches the
+public GitHub repository's `main` branch and automatically publishes successful
+production builds to the existing production Worker. Local Wrangler deployment
+is the recovery path. A successful push alone does not prove that deployment or
+public content verification completed.
 
-## Appearance and typography
+Server-side Worker invocation logs and traces are enabled with query strings
+redacted. This is operational telemetry and does not add a browser analytics
+beacon. No browser analytics or user-facing app data collection is part of the
+site.
 
-- Light and Dark appearances have separately authored semantic canvas, text,
-  line, accent, status, and focus relationships in `app/globals.css`.
-- The operating-system `prefers-color-scheme` value is the launch behavior.
-  There is no manual theme override yet; this is a deliberate scope choice, not
-  an undecided implementation.
-- Theme-color metadata is supplied for both appearances.
-- Typography uses the native system sans stack and a native UI-monospace stack.
-  Display weights were reduced and the responsive system changes weight,
-  tracking, line-height, measure, and intentional line breaks at smaller desktop,
-  tablet, and mobile widths. This keeps platform affinity and eliminates font
-  transfer or layout-shift risk; no webfont or preloader is present.
+## Validation and open work
 
-## Responsive behavior
+For site-wide visual changes, check the collection, both product routes, both
+support pages, both privacy pages, and the not-found page by direct load and
+reload. Preserve route status, headings, native links, policy facts, and release
+facts. Check keyboard focus, Light/Dark appearance, narrow reflow, reduced
+motion, and 200% zoom; evaluate Safari/WebKit, Chromium, and Firefox where
+available.
 
-Layout uses fluid type, spacing, intrinsic grids, and content-driven changes.
-Wide screens place each product's identity and evidence in its own asymmetrical
-composition. LinkScope turns technical side material into a vertical trace on
-narrow screens. Trackpad Wizard turns its capability ledger, mode comparison,
-signal path, release facts, and header navigation into single-column sequences
-without changing semantic source order; screenshots retain their native aspect
-ratios. Safe-area-aware gutters and touch sizing are part of the base CSS.
+The September 28 rebuild was checked with:
 
-## Accessibility implementation
+- Seven routes at 320, 768, and 1440 CSS pixels in Light and Dark appearance
+  (42 Chromium combinations): one h1, no page-width overflow, and no authored
+  visible text below 16 CSS pixels. Reduced motion selected automatic scrolling.
+- All seven routes directly loaded and reloaded with JavaScript disabled.
+  Keyboard activation of the skip link moved focus to the main landmark;
+  product/support navigation and Back/Forward also worked without scripts.
+- Viewport screenshots at 1440px and 390px independently reviewed for alignment,
+  focus, text hierarchy, and product image placement. Full-page capture output
+  from this tool session had stitching artifacts, so only viewport captures
+  were used as visual evidence.
+- Safari Technology Preview: home, both product pages, and LinkScope support;
+  product reloads; LinkScope and its support page at verified 200% page zoom.
+- All 19 unique internal destinations and image assets returned 200, with no
+  broken internal fragment targets; all eight external destinations returned
+  200 after redirects. The shared 404 is covered by the SSR tests.
 
-- Server-rendered landmarks, one route-level `h1`, ordered headings, lists,
-  tables, definitions, figures, captions, and fieldset/radio semantics carry the
-  document structure.
-- A visible-on-focus skip link and authored `:focus-visible` treatment support
-  keyboard navigation. Provider choices are native radios with labels.
-- Decorative uses of product marks have empty alternative text. Meaningful
-  reconstructions and screenshots have specific alternatives, captions, capture
-  dates, appearance and locale notes, and adjacent textual equivalents.
-- Motion respects `prefers-reduced-motion`; forced-colors rules preserve visible
-  controls and focus. Core content and navigation work without JavaScript.
-- Automated rendered-document checks exist. Physical VoiceOver, switch, zoom,
-  and full browser-engine QA remain open validation work.
+This does not constitute a full Firefox, VoiceOver, forced-colors, or physical
+mobile-device pass. Production delivery of this branch is a separate step from
+local validation. Local screenshots and check output live in ignored
+`outputs/rebuild/`.
 
-## Progressive enhancement and fallbacks
-
-| Enhancement | Current benefit | Detection | Complete fallback |
-| --- | --- | --- | --- |
-| CSS `:has()` | Shows the selected Summary, Raw Parameters, or History view | `@supports selector(:has(*))` | All device-detail panels remain in document flow |
-| `content-visibility: auto` | Avoids unnecessary below-fold rendering | `@supports (content-visibility: auto)` | Normal eager CSS rendering |
-| Cross-document View Transitions | Subtle continuity for native navigation | `@supports (view-transition-name: none)` and motion preference | Immediate normal document navigation |
-| Native lazy loading and asynchronous image decoding | Defers non-critical product and footer imagery | Browser-native attributes | Normal image fetch and decode |
-| Markdown content negotiation | Gives agents a clean main-content representation without HTML chrome | Explicit `Accept: text/markdown` media range | Complete HTML response if conversion is unavailable |
-
-No essential content, state explanation, control, focus order, or route depends
-on these capabilities. There are no user-agent branches or browser-specific
-code paths at launch.
-
-## Performance architecture
-
-The application ships no custom product-interaction bundle, remote font,
-browser analytics, or third-party runtime. LinkScope's mark is a compact local
-SVG. The collection index uses a purpose-sized 4.2 KB Trackpad Wizard WebP instead
-of transferring its 271 KB full-resolution presentation asset into a 48–64 px
-slot. Product art retains the full-resolution source, authored PNG/JPEG
-fallbacks, and a 96 KB WebP Overview presentation copy. Social assets are local
-and are not requested during ordinary collection rendering. Below-fold sections
-and non-critical images opt into deferred work where supported.
-
-Cloudflare applies tiered caching rather than one blanket lifetime. Hashed
-browser assets are immutable for one year; named media revalidates after one day
-and may serve stale for seven days; HTML always revalidates in the browser but is
-edge-cacheable for one hour with stale-while-revalidate. Static Assets and
-rendered HTML have both been observed returning `CF-Cache-Status: HIT` after
-warming.
-
-Agent-requested Markdown is converted from the same server-rendered source with
-Workers AI `toMarkdown()`, scoped to `<main>`, and cached under a representation-
-specific key so it cannot collide with HTML. Responses declare `Vary: Accept`,
-token estimates, and the same Search, AI Input, and AI Training permissions as
-`robots.txt`. Ordinary browser requests never enter the conversion path. A
-conversion error returns the complete HTML document rather than failing the
-route; this fallback is intentionally visible through its HTML content type.
-
-A matched Lighthouse 13.4.1 mobile lab run on 2026-09-04 scored the Cloudflare
-cutover artifact 100 versus 87 for the former ChatGPT Sites host. Cloudflare
-FCP/LCP/Speed Index/
-TBT/TTI were 1.23 s / 1.53 s / 2.29 s / 0 ms / 1.53 s, versus 2.53 s / 2.64 s /
-5.16 s / 168.5 ms / 4.21 s. Both had zero CLS; transferred bytes fell from
-419,723 to 148,198. These are comparative lab results from one machine, not
-field Core Web Vitals or a latency guarantee.
-
-The current vinext navigation/hydration runtime transfers about 111 KB gzipped
-before product interaction, roughly 31 KB above the constitution's initial
-80 KB JavaScript aim. This is an explicit launch exception for the supported
-vinext server-rendering/runtime path, not permission to add application script.
-Recheck vinext releases and a supported zero-hydration path; remove this
-exception when the same real-route and hosting behavior can ship more lightly.
-
-Keep this shape until evidence requires more: prefer HTML/CSS and native browser
-behavior, avoid speculative component systems, and audit any new dependency for
-runtime, maintenance, and privacy cost.
-
-## Assets and social metadata
-
-- `public/linkscope-mark.svg` is derived from the current product's authored
-  production geometry and is the page's primary identity material.
-- `public/jasonstu-logo.svg` and `public/jasonstu-logo-dark.png` are byte-for-byte
-  copies of the supplied official Light and Dark brand assets. Native `<picture>`
-  selection uses them only in the footer, without client-side appearance logic.
-- `public/favicon.svg` is a compact mark treatment.
-- `public/trackpad-wizard-icon.png` is a copy of the current production icon;
-  `public/trackpad-wizard-icon.webp` is its full-resolution presentation copy,
-  and `public/trackpad-wizard-icon-256.webp` is the compact collection-index
-  derivative.
-- `public/trackpad-wizard-overview.png` and
-  `public/trackpad-wizard-gesture.jpg` are real repository captures from
-  2026-08-30. `public/trackpad-wizard-overview.webp` is an efficient in-page
-  presentation copy; the PNG also serves Trackpad Wizard social metadata.
-- `public/og.png` is the refreshed two-product collection social card;
-  `public/linkscope-social.png` remains LinkScope's route-specific card. None is
-  used as page-background decoration.
-- Route metadata resolves against `https://apps.jasonstu.cc`. Each product page
-  owns its social image; privacy and support routes clear inherited images and
-  use summary metadata.
-- `/robots.txt` permits all user agents to crawl this host, explicitly grants
-  Cloudflare Content Signals uses for Search, AI Input, and AI Training, and
-  points to the canonical `/sitemap.xml`. The Worker authors the plain-text
-  response so the nonstandard `Content-Signal` directive remains exact. The
-  sitemap contains only canonical `apps.jasonstu.cc` routes.
-- HTML responses explicitly permit unrestricted search-result previews through
-  `X-Robots-Tag: max-snippet:-1, max-image-preview:large, max-video-preview:-1`.
-  This preview policy does not override the framework-authored `noindex` on real
-  `404` documents; non-HTML crawler resources do not receive the header.
-- No private device names, addresses, identifiers, or captured user interface
-  data from the inspected development machine are published.
-
-## Deployment
-
-Cloudflare Workers is the selected production runtime. The `jasonstu-apps`
-Worker serves native Static Assets at `https://apps.jasonstu.cc`; Cloudflare
-manages its proxied DNS record and certificate. The automatically assigned
-`workers.dev` address is an operational fallback. `wrangler.jsonc` owns the
-production Worker name, asset binding, custom domain, cache, compatibility date,
-observability settings, and Workers AI binding. Its named `beta` environment
-preserves the existing `jasonstu-apps-beta` Worker and
-`https://apps.beta.jasonstu.cc` route as a no-index rollback target, with the
-same binding so Markdown can be verified before production release.
-
-The former ChatGPT Sites project is no longer bound to the canonical hostname
-and has owner-only access. Anonymous requests to its generated address return
-`401`; no production traffic is routed there. Sites-specific source wiring and
-the project manifest have been removed from this repository.
-
-The public GitHub repository is the canonical source. Cloudflare Workers Builds
-watches its `main` branch and publishes successful production builds to the
-existing `jasonstu-apps` Worker. Local Wrangler deployment remains the recovery
-path if hosted builds are unavailable.
-
-All seven public routes pass direct-load and repeat-load checks after cutover,
-the unmatched route returns `404`, and crawler resources retain their expected
-content types. `robots.txt`, every sitemap entry, canonical metadata, and social
-metadata resolve to `https://apps.jasonstu.cc` with no beta or Sites hostname in
-the public document URLs.
-
-Cloudflare dashboard metrics plus persisted invocation logs and traces are
-enabled at a full sampling rate for the initial production observation period. This is operational
-server-side telemetry, not a browser beacon; the site still loads no analytics
-script, and query strings are redacted from stored telemetry. Revisit sampling
-after initial production traffic establishes an appropriate rate. The beta sends
-`X-Robots-Tag: noindex, nofollow, noarchive` while retaining production canonical
-URLs, so it does not compete with the official host in search results.
-
-## Significant decisions and rejected returns
-
-- Keep native multi-document navigation; do not introduce a client router to
-  simulate routes that the host can serve directly.
-- Use Workers Static Assets for production rather than creating a second Pages
-  architecture. It preserves the existing vinext server-rendering path and
-  supports explicit edge caching and observability. Keep the named beta Worker
-  as the bounded rollback path.
-- Keep the CSS-only, device-led inspector while it communicates the product
-  accurately; do not restore a provider-first selector or hydrate it for cosmetic
-  state management.
-- Keep Trackpad Wizard screenshot-led and static while real captures communicate
-  the product; do not build a decorative browser simulation of touch or haptics.
-- Publish Trackpad Wizard's direct download only while the matching notarized DMG
-  and checksum remain verifiable at the declared release URL.
-- Do not add Tailwind, a component library, a CMS, D1/R2, browser analytics, or
-  an image pipeline without a demonstrated requirement.
-- Do not turn the collection into an equal grid of generic cards or future app
-  pages into LinkScope reskins.
-- Do not publish a download, version, price, privacy promise, or capability that
-  cannot be reconciled with current product evidence.
-- Do not replace explicit availability states with empty placeholders or generic
-  success/error chrome.
-- Do not add ambient orbit animation, decorative parallax, or scroll hijacking.
-
-## Open questions and technical debt
-
-- Full LinkScope has no verified public binary download in this audit; its
-  Developer ID distribution target must not be presented as an available release.
-- Does a later collection need an Auto/Light/Dark selector in addition to the
-  current system-preference behavior?
-- Should future product additions justify a shared typed index for name, route,
-  status and artwork, or do their availability differences still favor local data?
-- Physical Safari/WebKit, Firefox, high-zoom, VoiceOver, and energy-use checks
-  remain required before treating the first implementation as fully hardened.
-- When should the beta Worker be retired after production has demonstrated
-  stable real-user behavior?
-- Reconsider the initial 100% log and trace sampling rate after real request
-  volume and retention cost are known.
-
-## Next actions
-
-1. Observe production Worker request/error/latency metrics and traces in the
-   Cloudflare dashboard; reduce sampling after the initial observation period.
-2. Run physical WebKit, Firefox, keyboard, VoiceOver, zoom, orientation, and
-   reduced-motion checks; record only actionable differences.
-3. Keep LinkScope Lite release facts aligned with Apple; reconcile the historical
-   App Review notes and changelog when preparing the next native release.
-4. Replace Trackpad Wizard captures after material interface changes and record
-   both Light and Dark evidence when the app supplies both.
-5. Update either privacy document when its app's storage, permission, network,
-   or distribution behavior changes.
+Next operational work remains: complete the remaining browser and assistive-technology review,
+observe production Worker request/error/latency behavior during the planned
+observation period, keep Lite release facts aligned with Apple, and replace
+application captures only when the underlying app interface changes materially.
