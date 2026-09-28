@@ -50,7 +50,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="theme-color" content="#f4f2ed" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#0e1012" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#121518" media="(prefers-color-scheme: dark)" />
       </head>
       <body>
         <a className="skip-link" href="#main-content">

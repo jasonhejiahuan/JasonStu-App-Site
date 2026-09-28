@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "../../site-header";
+import { SiteFooter, SiteHeader } from "../../site-header";
 
 const description = "Support information for the Trackpad Wizard macOS project.";
 
@@ -26,10 +26,10 @@ export default function TrackpadWizardSupportPage() {
   return (
     <>
       <SiteHeader product="Trackpad Wizard" />
-      <main id="main-content" className="document-page">
+      <main id="main-content" tabIndex={-1} className="document-page">
         <header className="document-title">
-          <p className="eyebrow">Trackpad Wizard / Support</p>
-          <h1>Support starts with what happened under your fingers.</h1>
+          <p className="document-context">Trackpad Wizard / Support</p>
+          <h1>Trackpad Wizard support</h1>
           <p>
             The public source repository and its issue tracker are the current
             support channel for Trackpad Wizard.
@@ -75,6 +75,35 @@ export default function TrackpadWizardSupportPage() {
             experiment needs it. Experimental services release their private
             runtime when no enhanced feature or recovery action remains active.
           </p>
+          <p>
+            System mode reads AppKit touch while the pointer is over the capture
+            surface, native gestures, Force Click stages, and device diagnostics.
+            Enhanced Mode adds raw contacts for one selected device and direct
+            actuator experiments. Advanced system changes require confirmation
+            and have an automatic ten-second rollback.
+          </p>
+        </section>
+
+        <section aria-labelledby="trackpad-workspaces-title">
+          <h2 id="trackpad-workspaces-title">Explore the workspaces</h2>
+          <dl className="document-facts">
+            <div><dt>Touch Lab</dt><dd>Contacts, resting touches, trails, heatmaps, physical sizing, sample rate, and Force Click pressure.</dd></div>
+            <div><dt>Gesture Studio</dt><dd>Magnification, rotation, precision scrolling, swipes, pressure stages, and gesture events.</dd></div>
+            <div><dt>Haptic Composer</dt><dd>Timed pulses, amplitude, device routing, and an 8–120 Hz press-and-hold signal in Enhanced Mode.</dd></div>
+            <div><dt>Mappings</dt><dd>Connect a swipe, pinch, rotation, or Force Click to a shortcut or saved haptic pattern. Key injection requires Accessibility access.</dd></div>
+            <div><dt>Statistics</dt><dd>Local actuator-call counts, daily history, lifetime totals, and a reset control, using pseudonymous device identifiers.</dd></div>
+            <div><dt>Devices</dt><dd>Transport, reported battery, Force Touch support, report interval, sensor size, and macOS trackpad preferences.</dd></div>
+          </dl>
+        </section>
+
+        <section aria-labelledby="trackpad-updates-title">
+          <h2 id="trackpad-updates-title">Downloads and updates</h2>
+          <p>
+            The release is Developer ID-signed, notarized, and stapled. GitHub
+            Releases includes a SHA-256 checksum; the in-app updater verifies the
+            downloaded image before opening it. Update checks can be manual or
+            daily. Automatic download is a separate preference.
+          </p>
         </section>
 
         <nav className="document-nav" aria-label="Trackpad Wizard documents">
@@ -83,6 +112,7 @@ export default function TrackpadWizardSupportPage() {
           <a href="https://github.com/jasonhejiahuan/Mac-Trackpad-Wizard/releases/tag/v0.3.0-build.4">Read release notes ↗</a>
         </nav>
       </main>
+      <SiteFooter />
     </>
   );
 }

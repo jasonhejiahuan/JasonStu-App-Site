@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "../../site-header";
+import { SiteFooter, SiteHeader } from "../../site-header";
 
 const description = "Current implementation privacy notes for Trackpad Wizard.";
 
@@ -26,9 +26,9 @@ export default function TrackpadWizardPrivacyPage() {
   return (
     <>
       <SiteHeader product="Trackpad Wizard" />
-      <main id="main-content" className="document-page">
+      <main id="main-content" tabIndex={-1} className="document-page">
         <header className="document-title">
-          <p className="eyebrow">Trackpad Wizard / Privacy / 2026-09-03</p>
+          <p className="document-context">Trackpad Wizard / Privacy / 2026-09-03</p>
           <h1>Experiments stay on your Mac unless you export them.</h1>
           <p>
             These notes describe the current 0.3.0 (Build 4) implementation. They
@@ -85,6 +85,7 @@ export default function TrackpadWizardPrivacyPage() {
           <a href="/trackpad-wizard/support">Get support</a>
         </nav>
       </main>
+      <SiteFooter />
     </>
   );
 }

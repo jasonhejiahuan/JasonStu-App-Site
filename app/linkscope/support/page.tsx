@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "../../site-header";
+import { SiteFooter, SiteHeader } from "../../site-header";
 
 const description = "Get help with LinkScope Lite for macOS: permissions, saved history, missing readings, and issue reports.";
 
@@ -26,10 +26,10 @@ export default function SupportPage() {
   return (
     <>
       <SiteHeader product="LinkScope" />
-      <main id="main-content" className="document-page">
+      <main id="main-content" tabIndex={-1} className="document-page">
         <header className="document-title">
-          <p className="eyebrow">LinkScope / Support</p>
-          <h1>Support begins with reproducible evidence.</h1>
+          <p className="document-context">LinkScope / Support</p>
+          <h1>LinkScope support</h1>
           <p>
             LinkScope Lite is available free on the Mac App Store. Use the public
             source repository and its issue tracker for support.
@@ -80,13 +80,62 @@ export default function SupportPage() {
         </section>
 
         <section aria-labelledby="requirements-title">
-          <h2 id="requirements-title">App information</h2>
+          <h2 id="requirements-title">Build your workspace</h2>
+          <p>
+            Select a device to inspect its Summary, Raw Parameters, and History.
+            Each reading retains its provider, update time, and availability.
+            LinkScope uses seven public sources: CoreHID / IOHID, IOBluetooth,
+            CoreBluetooth, Core Audio, Game Controller, IORegistry, and power
+            and thermal system events.
+          </p>
+          <p>
+            Dashboards support current value, availability status, time series,
+            raw table, timeline, and provider health widgets. Move or resize them
+            with the pointer or keyboard, use Undo and Redo to revise a layout,
+            and import or export dashboard documents as JSON.
+          </p>
+        </section>
+
+        <section aria-labelledby="availability-help-title">
+          <h2 id="availability-help-title">Understand availability</h2>
+          <dl className="document-facts">
+            <div><dt>Available</dt><dd>The provider returned a value.</dd></div>
+            <div><dt>Not exposed by macOS</dt><dd>The public framework has no value to provide.</dd></div>
+            <div><dt>Device did not report</dt><dd>The path exists, but the accessory supplied no reading.</dd></div>
+            <div><dt>Permission denied</dt><dd>Access is needed before the provider can read the value.</dd></div>
+            <div><dt>Unsupported</dt><dd>The provider or device cannot supply this parameter.</dd></div>
+            <div><dt>Stale</dt><dd>A prior reading exists but is no longer current.</dd></div>
+            <div><dt>Provider failed</dt><dd>The source returned a failure.</dd></div>
+          </dl>
+        </section>
+
+        <section aria-labelledby="diagnostics-help-title">
+          <h2 id="diagnostics-help-title">Record a diagnostic</h2>
+          <p>
+            Choose an available sample-capable source, a sampling interval, and a
+            duration. Sampling starts only when you start the session, and you can
+            stop it at any time. Sleep or a provider interruption is recorded as a
+            gap. Review or compare sessions and export displayed readings as CSV.
+            The menu bar and Shortcuts also provide snapshot and diagnostic actions.
+          </p>
+          <p>
+            LinkScope observes system-reported information. It does not pair
+            devices, change accessory settings, remap controls, or update firmware.
+            Rules can watch parameter changes, availability, numeric thresholds,
+            or provider status and send optional local notifications.
+          </p>
+        </section>
+
+        <section aria-labelledby="app-information-title">
+          <h2 id="app-information-title">App information</h2>
           <dl className="document-facts">
             <div><dt>Platform</dt><dd>macOS 15 or newer</dd></div>
             <div><dt>Editions</dt><dd>LinkScope and LinkScope Lite</dd></div>
             <div><dt>Interface languages</dt><dd>English and Simplified Chinese</dd></div>
             <div><dt>Current release</dt><dd>LinkScope Lite 2.0.1 · Build 13</dd></div>
             <div><dt>Availability</dt><dd><a href="https://apps.apple.com/app/linkscope-lite/id6802596955">Free on the Mac App Store</a></dd></div>
+            <div><dt>Source license</dt><dd>AGPL-3.0-only</dd></div>
+            <div><dt>Full edition</dt><dd>Source build with a Developer ID distribution target; the verified store download is LinkScope Lite.</dd></div>
           </dl>
         </section>
 
@@ -95,6 +144,7 @@ export default function SupportPage() {
           <a href="/linkscope/privacy">Read privacy policy</a>
         </nav>
       </main>
+      <SiteFooter />
     </>
   );
 }
