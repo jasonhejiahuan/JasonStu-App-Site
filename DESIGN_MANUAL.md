@@ -14,7 +14,7 @@ when source, routes, deployment, or product evidence changes.
   Trackpad Wizard and JSTU Connect.
 - **Routes:** `/`; `/linkscope`, `/linkscope/support`,
   `/linkscope/privacy`; `/trackpad-wizard`, `/trackpad-wizard/support`, and
-  `/trackpad-wizard/privacy`; `/jstu-connect`, `/jstu-connect/privacy`. Unknown paths return an HTTP
+  `/trackpad-wizard/privacy`; `/jstu-connect`, `/jstu-connect/privacy`, `/jstu-connect/support`. Unknown paths return an HTTP
   404 document.
 - **Rendering:** TypeScript, React 19, vinext App Router-compatible server
   rendering, Vite, and Cloudflare Workers Static Assets. Each route emits useful
@@ -43,9 +43,13 @@ when source, routes, deployment, or product evidence changes.
   in source is still 26.0). `/jstu-connect/privacy` is the App Store
   privacy-policy URL: it states that the app collects no data, then describes
   on-device use, peer-to-peer sharing, Keychain and preference storage,
-  permissions, retention and deletion. Its contact address is unset
-  (`privacyContactEmail`) until the owner supplies one. There is no support
-  route yet. Product claims and
+  permissions, retention and deletion. `/jstu-connect/support` is the App
+  Store Support URL: getting started, pairing (with the app's own UI labels),
+  connection checks, touch surface, status sharing, Stop / Disconnect
+  Temporarily / Forget Device…, troubleshooting with the known open issues,
+  and release facts. By owner decision (2026-10-15) neither page publishes a
+  contact email, matching LinkScope, which App Review approved without one;
+  support directs testers to TestFlight feedback. Product claims and
   document facts stay in their owning pages and must remain grounded in the app
   and release evidence.
 - **Visual audit and checks:** On 2026-09-28, lint, typecheck, the 18 rendered
@@ -214,7 +218,7 @@ forced-colors settings.
 ## Metadata, crawling, and deployment
 
 The canonical origin is `https://apps.jasonstu.cc`. Route canonical, sitemap,
-and social metadata use that host. The sitemap contains the nine public routes;
+and social metadata use that host. The sitemap contains the ten public routes;
 `/robots.txt` permits crawling and points to the sitemap. The Worker adds
 search-preview response headers to HTML. The beta host is excluded from
 indexing.

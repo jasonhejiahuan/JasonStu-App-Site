@@ -54,6 +54,7 @@ export default function Home() {
               <p className="entry-platform">A conceptual foundation · Mac, iPhone and iPad</p>
               <div className="product-actions">
                 <a className="action-primary" href="/jstu-connect">Introducing JSTU Connect <span aria-hidden="true">↗</span></a>
+                <a href="/jstu-connect/support">Support</a>
               </div>
             </div>
             <a className="entry-art" href="/jstu-connect" aria-label="Introducing JSTU Connect">
