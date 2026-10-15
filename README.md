@@ -14,6 +14,7 @@ Current public routes:
 - `/linkscope/support` — LinkScope support path
 - `/jstu-connect` — JSTU Connect introduction: a conceptual foundation in current practice
 - `/jstu-connect/privacy` — JSTU Connect privacy policy (App Store Connect privacy URL)
+- `/jstu-connect/support` — JSTU Connect support (App Store Connect support URL)
 
 ## Development
 

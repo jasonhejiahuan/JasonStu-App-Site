@@ -35,6 +35,7 @@ const routeCases = [
   ["/linkscope/support", /LinkScope support/, "https://apps.jasonstu.cc/linkscope/support"],
   ["/jstu-connect", /JSTU Connect<\/h1>/, "https://apps.jasonstu.cc/jstu-connect"],
   ["/jstu-connect/privacy", /JSTU Connect Privacy Policy<\/h1>/, "https://apps.jasonstu.cc/jstu-connect/privacy"],
+  ["/jstu-connect/support", /JSTU Connect support<\/h1>/, "https://apps.jasonstu.cc/jstu-connect/support"],
 ];
 
 for (const [pathname, expected, canonical] of routeCases) {
@@ -84,6 +85,20 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /this-device-only items/);
       assert.match(html, /Granting access does not start capture or recording/);
       assert.match(html, /aria-label="JSTU Connect documents"/);
+      assert.match(html, /href="\/jstu-connect\/support"/);
+    }
+
+    if (pathname === "/jstu-connect/support") {
+      assert.match(html, /Pairing two devices/);
+      assert.match(html, /Disconnect Temporarily/);
+      assert.match(html, /Forget Device…/);
+      assert.match(html, /Privacy &amp; Security &gt; Local Network/);
+      assert.match(html, /href="\/jstu-connect\/privacy"/);
+      assert.match(html, /TestFlight app/);
+    }
+
+    if (pathname.startsWith("/jstu-connect")) {
+      assert.doesNotMatch(html, /will be published here|mailto:/);
     }
 
     if (pathname === "/" || pathname === "/linkscope" || pathname === "/trackpad-wizard" || pathname === "/jstu-connect") {
@@ -99,6 +114,7 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /Free on the Mac App Store · macOS 15\+/);
       assert.match(html, /href="\/jstu-connect"/);
       assert.match(html, /A conceptual foundation · Mac, iPhone and iPad/);
+      assert.match(html, /href="\/jstu-connect\/support"/);
     }
 
     if (pathname === "/trackpad-wizard") {
@@ -357,5 +373,6 @@ test("limits sitemap URLs to the canonical apps hostname", async () => {
     "https://apps.jasonstu.cc/linkscope/support",
     "https://apps.jasonstu.cc/jstu-connect",
     "https://apps.jasonstu.cc/jstu-connect/privacy",
+    "https://apps.jasonstu.cc/jstu-connect/support",
   ]);
 });

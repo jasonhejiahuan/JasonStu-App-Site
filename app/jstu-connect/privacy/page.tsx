@@ -5,9 +5,6 @@ import "../connect.css";
 const description =
   "How JSTU Connect for Mac, iPhone and iPad handles device information, pairing, status sharing, permissions and local storage. JASON Studio collects no data from the app.";
 
-// Set to the published privacy contact address before release.
-const privacyContactEmail: string | null = null;
-
 export const metadata: Metadata = {
   title: "JSTU Connect Privacy Policy",
   description,
@@ -155,13 +152,8 @@ export default function JSTUConnectPrivacyPage() {
         </section>
 
         <section aria-labelledby="contact-title">
-          <h2 id="contact-title">Contact and changes</h2>
+          <h2 id="contact-title">Changes to this policy</h2>
           <p>
-            {privacyContactEmail ? (
-              <>For privacy questions or requests, email <a href={`mailto:${privacyContactEmail}`}>{privacyContactEmail}</a>.</>
-            ) : (
-              <>A privacy contact address will be published here before JSTU Connect is released.</>
-            )}{" "}
             If a future version changes how the app handles information, we will update this policy, its effective
             date and the App Store privacy details before that version is released.
           </p>
@@ -169,6 +161,7 @@ export default function JSTUConnectPrivacyPage() {
 
         <nav className="document-nav" aria-label="JSTU Connect documents">
           <a href="/jstu-connect">Return to JSTU Connect</a>
+          <a href="/jstu-connect/support">Get support</a>
         </nav>
       </main>
       <SiteFooter />

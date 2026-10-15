@@ -15,5 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://apps.jasonstu.cc/linkscope/support", lastModified: linkScopeModified, priority: 0.6 },
     { url: "https://apps.jasonstu.cc/jstu-connect", lastModified: jstuConnectModified, priority: 0.9 },
     { url: "https://apps.jasonstu.cc/jstu-connect/privacy", lastModified: jstuConnectModified, priority: 0.5 },
+    { url: "https://apps.jasonstu.cc/jstu-connect/support", lastModified: jstuConnectModified, priority: 0.6 },
   ];
 }

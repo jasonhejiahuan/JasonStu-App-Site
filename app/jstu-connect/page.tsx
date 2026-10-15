@@ -243,7 +243,7 @@ export default function JSTUConnectPage() {
             <div><dt>Works with</dt><dd>Two or more of your own devices</dd></div>
             <div><dt>Languages</dt><dd>English and Simplified Chinese</dd></div>
             <div><dt>Account</dt><dd>None required</dd></div>
-            <div><dt>Privacy</dt><dd><a href="/jstu-connect/privacy">Privacy Policy</a></dd></div>
+            <div><dt>Help</dt><dd><a href="/jstu-connect/support">Support</a> · <a href="/jstu-connect/privacy">Privacy Policy</a></dd></div>
           </dl>
         </section>
 
