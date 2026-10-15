@@ -33,6 +33,8 @@ const routeCases = [
   ["/linkscope", /A clearer view of your Mac/, "https://apps.jasonstu.cc/linkscope"],
   ["/linkscope/privacy", /LinkScope Lite Privacy Policy/, "https://apps.jasonstu.cc/linkscope/privacy"],
   ["/linkscope/support", /LinkScope support/, "https://apps.jasonstu.cc/linkscope/support"],
+  ["/jstu-connect", /JSTU Connect<\/h1>/, "https://apps.jasonstu.cc/jstu-connect"],
+  ["/jstu-connect/privacy", /JSTU Connect Privacy Policy<\/h1>/, "https://apps.jasonstu.cc/jstu-connect/privacy"],
 ];
 
 for (const [pathname, expected, canonical] of routeCases) {
@@ -62,7 +64,29 @@ for (const [pathname, expected, canonical] of routeCases) {
     assert.match(html, new RegExp(`<link rel="canonical" href="${canonical}"`));
     assert.match(html, />JasonStu<\/span><span>Apps<\/span>/);
 
-    if (pathname === "/" || pathname === "/linkscope" || pathname === "/trackpad-wizard") {
+    if (pathname === "/jstu-connect") {
+      assert.match(html, /Introducing/);
+      assert.match(html, /Unlock full capability by <span class="cx-term">Multidevice Collaboration<\/span>/);
+      assert.match(html, /https:\/\/apps\.jasonstu\.cc\/jstu-connect-social\.png/);
+      assert.match(html, /not yet a production-ready application/);
+      assert.match(html, /Path continuity between a Mac and an iPhone/);
+      assert.match(html, /jstu-connect-mac-workspace\.webp/);
+      assert.doesNotMatch(html, /seamless|zero latency|apps\.apple\.com|cx-status|macOS 26/i);
+      assert.match(html, /href="\/jstu-connect\/privacy"/);
+      assert.doesNotMatch(html, /jstu-connect-hdr-dot/);
+      assert.match(html, /jstu-connect-hdr-mark\.png/);
+      assert.match(html, /mask="url\(#cx-mark-upper\)"/);
+    }
+
+    if (pathname === "/jstu-connect/privacy") {
+      assert.match(html, /does not collect any data from JSTU Connect/);
+      assert.match(html, /Status sharing is off by default/);
+      assert.match(html, /this-device-only items/);
+      assert.match(html, /Granting access does not start capture or recording/);
+      assert.match(html, /aria-label="JSTU Connect documents"/);
+    }
+
+    if (pathname === "/" || pathname === "/linkscope" || pathname === "/trackpad-wizard" || pathname === "/jstu-connect") {
       assert.match(html, /jasonstu-logo\.svg/);
       assert.match(html, /jasonstu-logo-dark\.png/);
     }
@@ -73,6 +97,8 @@ for (const [pathname, expected, canonical] of routeCases) {
       assert.match(html, /Available for Mac · macOS 26\+/);
       assert.match(html, /href="\/linkscope"/);
       assert.match(html, /Free on the Mac App Store · macOS 15\+/);
+      assert.match(html, /href="\/jstu-connect"/);
+      assert.match(html, /A conceptual foundation · Mac, iPhone and iPad/);
     }
 
     if (pathname === "/trackpad-wizard") {
@@ -329,5 +355,7 @@ test("limits sitemap URLs to the canonical apps hostname", async () => {
     "https://apps.jasonstu.cc/linkscope",
     "https://apps.jasonstu.cc/linkscope/privacy",
     "https://apps.jasonstu.cc/linkscope/support",
+    "https://apps.jasonstu.cc/jstu-connect",
+    "https://apps.jasonstu.cc/jstu-connect/privacy",
   ]);
 });

@@ -47,6 +47,23 @@ export default function Home() {
               </picture>
             </a>
           </article>
+          <article className="app-entry">
+            <div className="entry-copy">
+              <h2><a href="/jstu-connect">JSTU Connect</a></h2>
+              <p>Unlock full capability by Multidevice Collaboration. A private, local foundation for your Mac, iPhone and iPad.</p>
+              <p className="entry-platform">A conceptual foundation · Mac, iPhone and iPad</p>
+              <div className="product-actions">
+                <a className="action-primary" href="/jstu-connect">Introducing JSTU Connect <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <a className="entry-art" href="/jstu-connect" aria-label="Introducing JSTU Connect">
+              <picture>
+                <source media="(prefers-color-scheme: dark)" srcSet="/jstu-connect-icon-dark.webp" type="image/webp" />
+                <source srcSet="/jstu-connect-icon-light.webp" type="image/webp" />
+                <img src="/jstu-connect-icon-light.png" width="256" height="256" alt="" decoding="async" />
+              </picture>
+            </a>
+          </article>
         </section>
       </main>
       <SiteFooter />
