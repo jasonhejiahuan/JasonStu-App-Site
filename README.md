@@ -12,6 +12,8 @@ Current public routes:
 - `/linkscope` — LinkScope Lite 2.0.1 product exploration and free Mac App Store download
 - `/linkscope/privacy` — LinkScope Lite privacy policy
 - `/linkscope/support` — LinkScope support path
+- `/jstu-connect` — JSTU Connect introduction: a conceptual foundation in current practice
+- `/jstu-connect/privacy` — JSTU Connect privacy policy (App Store Connect privacy URL)
 
 ## Development
 
@@ -32,3 +34,5 @@ no-index staging origin at `https://apps.beta.jasonstu.cc`.
 visual direction is recorded in `docs/art-direction/site-visual-rebuild.md`:
 shared typography and alignment, real product captures, and detailed guidance on
 the support routes. Earlier product briefs describe superseded compositions.
+JSTU Connect is the deliberate exception, with its own brief in
+`docs/art-direction/jstu-connect.md`.

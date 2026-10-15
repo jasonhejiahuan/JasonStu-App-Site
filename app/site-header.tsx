@@ -2,6 +2,7 @@ export function SiteHeader({ product, productHome = false }: { product?: string;
   const products = [
     { name: "LinkScope", label: "LinkScope", href: "/linkscope" },
     { name: "Trackpad Wizard", label: "Trackpad Wizard", href: "/trackpad-wizard" },
+    { name: "JSTU Connect", label: "JSTU Connect", href: "/jstu-connect" },
   ];
 
   return (

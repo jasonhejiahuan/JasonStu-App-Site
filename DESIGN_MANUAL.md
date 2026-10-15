@@ -1,7 +1,7 @@
 # JasonStu Apps Design Manual
 
 Status: Living operational project record  
-Last checked against source and repository evidence: 2026-09-28
+Last checked against source and repository evidence: 2026-10-15
 
 This manual records the website that is implemented and the current shared
 visual direction. It is not a release changelog. Replace outdated descriptions
@@ -10,11 +10,12 @@ when source, routes, deployment, or product evidence changes.
 ## Current state
 
 - **Site:** The public collection of independent JASON Studio applications at
-  `https://apps.jasonstu.cc`. The current product routes are LinkScope Lite and
-  Trackpad Wizard.
+  `https://apps.jasonstu.cc`. The current product routes are LinkScope Lite,
+  Trackpad Wizard and JSTU Connect.
 - **Routes:** `/`; `/linkscope`, `/linkscope/support`,
   `/linkscope/privacy`; `/trackpad-wizard`, `/trackpad-wizard/support`, and
-  `/trackpad-wizard/privacy`. Unknown paths return an HTTP 404 document.
+  `/trackpad-wizard/privacy`; `/jstu-connect`, `/jstu-connect/privacy`. Unknown paths return an HTTP
+  404 document.
 - **Rendering:** TypeScript, React 19, vinext App Router-compatible server
   rendering, Vite, and Cloudflare Workers Static Assets. Each route emits useful
   HTML on direct load. Core content and navigation use semantic HTML and native
@@ -34,8 +35,19 @@ when source, routes, deployment, or product evidence changes.
   readings, diagnostics, release facts, and safe issue reporting. Trackpad Wizard
   presents its current 0.3.0 (Build 4) release and macOS 26+ requirement. Its
   support and privacy pages describe the app's current mode, permission,
-  storage, and distribution boundaries. Product claims and document facts stay
-  in their owning pages and must remain grounded in the app and release evidence.
+  storage, and distribution boundaries. JSTU Connect has no public download
+  yet. Its page presents the app as a conceptual foundation for Multidevice
+  Collaboration, shown in current practice and framed by the owner's research
+  report. It states that the app is not yet production-ready, and names no
+  minimum OS (the app is built with the Apple 27 SDKs; its deployment target
+  in source is still 26.0). `/jstu-connect/privacy` is the App Store
+  privacy-policy URL: it states that the app collects no data, then describes
+  on-device use, peer-to-peer sharing, Keychain and preference storage,
+  permissions, retention and deletion. Its contact address is unset
+  (`privacyContactEmail`) until the owner supplies one. There is no support
+  route yet. Product claims and
+  document facts stay in their owning pages and must remain grounded in the app
+  and release evidence.
 - **Visual audit and checks:** On 2026-09-28, lint, typecheck, the 18 rendered
   HTML/SSR checks, production build, and Cloudflare deployment dry run passed.
   Chromium reflow, both appearances, no-JavaScript navigation, and selected
@@ -82,6 +94,29 @@ unless the underlying product evidence changes.
   the Cloudflare edge. The repository does not use D1, R2, authentication,
   browser analytics, site cookies, or a third-party browser script.
 
+- `app/jstu-connect/` is the one deliberate exception to the shared visual
+  system, by owner direction on 2026-10-15. `page.tsx` composes the chapter;
+  `sky.tsx` renders a seeded star field and the app mark as server-side SVG;
+  `continuity.tsx` is a labelled schematic of standby-path failover; and
+  `connect.css` (cascade layer `connect`) re-points the shared tokens through
+  `:root:has(.connect)`, so the header and footer join the chapter's palette
+  without affecting other routes. Its accents switch to `color(display-p3 …)`
+  values under `@media (color-gamut: p3)`. Under `(dynamic-range: high)` in
+  Dark appearance, the one-time sheen on the title and on “Multidevice
+  Collaboration” uses `public/jstu-connect-hdr-sheen.png`, a 16-bit PNG with a
+  `cICP` chunk (BT.2020, PQ) peaking near 1,000 nits; other displays keep a CSS
+  gradient. The hero mark's upper stroke gains `public/jstu-connect-hdr-mark.png`
+  on HDR displays in Dark appearance: a PQ image masked to that stroke that
+  reproduces its SDR gradient exactly, except that the very top rises to about
+  3x SDR white. It fades in after the draw-in, and the mark's drop-shadow
+  breathing is disabled there, because a filter would flatten it to SDR. SDR
+  screens render the plain gradient unchanged. The continuity diagram keeps
+  its stroked SDR pulse; an HDR dot sprite was tried and removed at the owner's
+  request on 2026-10-15. All motion is CSS: load sequences and loops
+  sit behind `prefers-reduced-motion: no-preference`, and scroll reveals also
+  require `animation-timeline: view()` support. Without either, every element
+  renders in its final state. The page ships no client script.
+
 ## Route roles and shared shell
 
 The collection home is the index to public apps and gives each entry its own
@@ -114,6 +149,11 @@ actions against warm-white/ink neutrals. Product-specific color may remain in
 authentic app artwork or actual captured interface, not in a site-wide card or
 gradient system.
 
+JSTU Connect follows its own brief, `docs/art-direction/jstu-connect.md`: a
+night sky in Dark appearance and the same sky as a printed star chart in Light,
+light-weight display type, and real captures framed on that ground. Do not
+generalise its treatments to the other chapters.
+
 Responsive layouts reflow into a single column at narrow widths while retaining
 logical source order, useful screenshot size, readable type, tappable links, and
 the same content alignment. Avoid empty side columns and forced desktop
@@ -143,6 +183,25 @@ forced-colors settings.
   and the Gesture Studio JPEG remain the source captures; WebP files are
   presentation copies. Do not claim a browser demonstration is collecting live
   trackpad input.
+- **JSTU Connect:** the icons (`jstu-connect-icon-{light,dark}`) are 256 px
+  exports of the app's 1024 px Light and Dark icons. The three captures are
+  genuine en-US App Store artwork captures from 2026-10-15 (macOS app and iOS
+  Simulator; signed Mac Debug and ad-hoc Simulator builds), copied unedited
+  apart from the iPhone downscale to 660 px; WebP copies are presentation
+  derivatives. Owner device names visible in them are the owner's own. The
+  iPhone touchpad capture is deliberately unused: its dismiss button shows a
+  known “Off” label bug. `jstu-connect-social.png` is a 1731 × 909 capture of
+  the page's own hero.
+- **Colour management:** every product capture, icon and WebP derivative is
+  tagged with an embedded Display P3 profile. Sources carrying device or
+  calibration profiles (for example a Lenovo T4242p Spyder calibration) were
+  converted to Display P3 rather than copied, so PNG and WebP render
+  identically. WebP derivatives must be written with their profile (ImageMagick
+  keeps it; plain `cwebp` drops it unless given `-metadata icc`). The LinkScope
+  and Trackpad Wizard WebPs were regenerated this way on 2026-10-15 from their
+  unchanged source PNGs. Social cards stay sRGB-tagged for link-preview
+  compatibility. `trackpad-wizard-gesture.jpg` still embeds its calibration
+  profile; it is colour-managed correctly but is not yet normalised.
 - `public/jasonstu-logo.svg` and `public/jasonstu-logo-dark.png` are supplied
   publisher artwork used in the footer, with a CSS monochrome filter preserving
   contrast in both appearances. The LinkScope mark, app icon, screenshots,
@@ -155,7 +214,7 @@ forced-colors settings.
 ## Metadata, crawling, and deployment
 
 The canonical origin is `https://apps.jasonstu.cc`. Route canonical, sitemap,
-and social metadata use that host. The sitemap contains the seven public routes;
+and social metadata use that host. The sitemap contains the nine public routes;
 `/robots.txt` permits crawling and points to the sitemap. The Worker adds
 search-preview response headers to HTML. The beta host is excluded from
 indexing.
@@ -205,6 +264,13 @@ This does not constitute a full Firefox, VoiceOver, forced-colors, or physical
 mobile-device pass. Production delivery of this branch is a separate step from
 local validation. Local screenshots and check output live in ignored
 `outputs/rebuild/`.
+
+The 2026-10-15 JSTU Connect addition was checked with lint, typecheck, the
+production build and 19 rendered-HTML/SSR checks (all passing), and headless
+Chromium captures at 1440, 1100 and 390 CSS pixels in Light and Dark plus a
+reduced-motion pass: one h1, no horizontal overflow, and the LinkScope and home
+routes visually unchanged apart from the new navigation item and home entry.
+Safari/WebKit, Firefox, VoiceOver and a Cloudflare dry run were not run for it.
 
 Next operational work remains: complete the remaining browser and assistive-technology review,
 observe production Worker request/error/latency behavior during the planned
